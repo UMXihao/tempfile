@@ -1,0 +1,31 @@
+原始模型基于llama.cpp-b3720
+
+全部卸载到GPU
+
+llama_perf_print:    sampling time =       5.82 ms /   143 runs   (    0.04 ms per token, 24591.57 tokens per second)
+llama_perf_print:        load time =   18527.05 ms
+llama_perf_print: prompt eval time =      46.10 ms /    15 tokens (    3.07 ms per token,   325.36 tokens per second)
+llama_perf_print:        eval time =    5298.91 ms /   127 runs   (   41.72 ms per token,    23.97 tokens per second)
+llama_perf_print:       total time =    5382.08 ms /   142 tokens
+
+全部在CPU
+
+llama_perf_print:    sampling time =       7.17 ms /   143 runs   (    0.05 ms per token, 19935.87 tokens per second)
+llama_perf_print:        load time =    2914.49 ms
+llama_perf_print: prompt eval time =     812.04 ms /    15 tokens (   54.14 ms per token,    18.47 tokens per second)
+llama_perf_print:        eval time =   94447.68 ms /   127 runs   (  743.68 ms per token,     1.34 tokens per second)
+llama_perf_print:       total time =   95492.67 ms /   142 tokens
+
+
+
+我的设计
+
+第一次修改，使用按行加载
+
+采用一半张量的时间，预填充时间和解码时间均有所下降，但是内存占用并没有减少，实际还是加载了全部的张量到显存中，只是参与运算的buffer中读取的张量是按行读取的。
+
+llama_perf_print:    sampling time =       4.00 ms /   143 runs   (    0.03 ms per token, 35776.83 tokens per second)
+llama_perf_print:        load time =   19096.36 ms
+llama_perf_print: prompt eval time =      33.07 ms /    15 tokens (    2.20 ms per token,   453.53 tokens per second)
+llama_perf_print:        eval time =    3437.23 ms /   127 runs   (   27.06 ms per token,    36.95 tokens per second)
+llama_perf_print:       total time =    3480.55 ms /   142 tokens
