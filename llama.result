@@ -29,3 +29,52 @@ llama_perf_print:        load time =   19096.36 ms
 llama_perf_print: prompt eval time =      33.07 ms /    15 tokens (    2.20 ms per token,   453.53 tokens per second)
 llama_perf_print:        eval time =    3437.23 ms /   127 runs   (   27.06 ms per token,    36.95 tokens per second)
 llama_perf_print:       total time =    3480.55 ms /   142 tokens
+
+并行解码
+原始模型全部卸载到GPU的计算结果：
+./llama-cli -m ../../models/Llama-2-7b-hf-gguf/Llama-2-7b-hf-gguf.gguf -n 128 -p "What happens to you if you eat watermelon seeds?" -ngl 33
+
+llama_perf_print:    sampling time =       3.86 ms /   143 runs   (    0.03 ms per token, 37065.84 tokens per second)
+llama_perf_print:        load time =   19644.05 ms
+llama_perf_print: prompt eval time =      33.50 ms /    15 tokens (    2.23 ms per token,   447.75 tokens per second)
+llama_perf_print:        eval time =    3538.83 ms /   127 runs   (   27.86 ms per token,    35.89 tokens per second)
+llama_perf_print:       total time =    3582.87 ms /   142 tokens
+
+llama_perf_print:    sampling time =       3.84 ms /   143 runs   (    0.03 ms per token, 37229.89 tokens per second)
+llama_perf_print:        load time =   19038.06 ms
+llama_perf_print: prompt eval time =      32.28 ms /    15 tokens (    2.15 ms per token,   464.73 tokens per second)
+llama_perf_print:        eval time =    3497.59 ms /   127 runs   (    27.54 ms per token,    36.31 tokens per second)
+llama_perf_print:       total time =    3541.12 ms /   142 tokens
+
+4210个token
+llama_perf_print:    sampling time =       4.06 ms /  4338 runs   (    0.00 ms per token, 1069526.63 tokens per second)
+llama_perf_print:        load time =   19033.34 ms
+llama_perf_print: prompt eval time =    1639.01 ms /  4210 tokens (    0.39 ms per token,  2568.63 tokens per second)
+llama_perf_print:        eval time =    4285.94 ms /   127 runs   (   33.75 ms per token,    29.63 tokens per second)
+llama_perf_print:       total time =    5947.77 ms /  4337 tokens
+
+当前并行结算的时间花销：
+llama_perf_print:    sampling time =       3.83 ms /   143 runs   (    0.03 ms per token, 37366.08 tokens per second)
+llama_perf_print:        load time =   19679.59 ms
+llama_perf_print: prompt eval time =      33.45 ms /    15 tokens (    2.23 ms per token,   448.42 tokens per second)
+llama_perf_print:        eval time =    3977.70 ms /   127 runs   (   31.32 ms per token,    31.93 tokens per second)
+llama_perf_print:       total time =    4032.56 ms /   142 tokens
+
+llama_perf_print:    sampling time =       0.48 ms /    29 runs   (    0.02 ms per token, 59917.36 tokens per second)
+llama_perf_print:        load time =   19017.21 ms
+llama_perf_print: prompt eval time =      34.72 ms /    15 tokens (    2.31 ms per token,   432.04 tokens per second)
+llama_perf_print:        eval time =     405.21 ms /    13 runs   (   31.17 ms per token,    32.08 tokens per second)
+llama_perf_print:       total time =     454.73 ms /    28 tokens
+
+llama_perf_print:    sampling time =       4.23 ms /   143 runs   (    0.03 ms per token, 33774.21 tokens per second)
+llama_perf_print:        load time =   19144.85 ms
+llama_perf_print: prompt eval time =      31.78 ms /    15 tokens (    2.12 ms per token,   472.02 tokens per second)
+llama_perf_print:        eval time =    3857.21 ms /   127 runs   (   30.37 ms per token,    32.93 tokens per second)
+llama_perf_print:       total time =    3910.96 ms /   142 tokens
+
+4210个token
+llama_perf_print:    sampling time =       4.21 ms /  4338 runs   (    0.00 ms per token, 1029181.49 tokens per second)
+llama_perf_print:        load time =   19096.02 ms
+llama_perf_print: prompt eval time =     724.71 ms /  2052 tokens (    0.35 ms per token,  2831.50 tokens per second)
+llama_perf_print:        eval time =    4262.84 ms /   127 runs   (   33.57 ms per token,    29.79 tokens per second)
+llama_perf_print:       total time =    5028.97 ms /  2179 tokens
