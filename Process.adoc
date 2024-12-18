@@ -1,0 +1,51 @@
+= Design Process
+
+== I. Load Model by Row
+
+--split_mode, just support the load mode,value={row}
+
+--tensor_split, model sparsity, value={0.1, 0.2, 0.3, ..., 1}
+
+== II. Parallel Decoding
+
+prefill phase: one batch
+
+decode phase: share first token, two batches execute parallely
+
+=== Memory: minimal alteration
+.origin decode memory
+image::origin decode memory.png[]
+
+.origin max context memory
+image::origin max context memory.png[]
+
+.parallel decode memory
+image::parallel decode memory.png[]
+
+.parallel max ctx memory
+image::parallel max ctx memory.png[]
+
+short token(15): 15998MiB - 15976MiB = 22MiB
+
+max ctx token(4096): 16210MiB - 16197MiB = 13MiB
+
+=== Latency: increase somewhat
+same prefill latency
+
+decode latency: slight increase of a few milliseconds
+
+icon:以上已完成[role="green", title="已完成"]
+
+== III. Similarity Calculation
+
+. Embedding Collection icon:Processing[role="yellow", title="已完成"]
+. Cosine Similarity Calculation
+
+== IV. Offline Model Modification
+. Sparsity Analysis
+. Weight resort
+. Output new model
+
+== V. RL scheduler
+. Offline Training: Datasets with Latency and Accuracy
+. Online Learning
