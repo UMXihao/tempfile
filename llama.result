@@ -53,6 +53,12 @@ llama_perf_print: prompt eval time =    1639.01 ms /  4210 tokens (    0.39 ms p
 llama_perf_print:        eval time =    4285.94 ms /   127 runs   (   33.75 ms per token,    29.63 tokens per second)
 llama_perf_print:       total time =    5947.77 ms /  4337 tokens
 
+llama_perf_print:    sampling time =       4.03 ms /  4338 runs   (    0.00 ms per token, 1076426.80 tokens per second)
+llama_perf_print:        load time =   19049.25 ms
+llama_perf_print: prompt eval time =    1644.30 ms /  4210 tokens (    0.39 ms per token,  2560.37 tokens per second)
+llama_perf_print:        eval time =    4231.37 ms /   127 runs   (   33.32 ms per token,    30.01 tokens per second)
+llama_perf_print:       total time =    5897.67 ms /  4337 tokens
+
 当前并行结算的时间花销：
 llama_perf_print:    sampling time =       3.83 ms /   143 runs   (    0.03 ms per token, 37366.08 tokens per second)
 llama_perf_print:        load time =   19679.59 ms
