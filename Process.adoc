@@ -49,3 +49,14 @@ icon:以上已完成[role="green", title="已完成"]
 == V. RL scheduler
 . Offline Training: Datasets with Latency and Accuracy
 . Online Learning
+
+关于多头注意力机制
+https://juejin.cn/post/6844904078137360398
+
+image::MHA.png[]
+
+Q_i=QW_i^Q,K_i=KW_i^K,V_i=VW_i^V,i=1,...,8
+head_i=Attention(Q_i,K_i,V_i),i=1,...,8
+MultiHead(Q,K,V)=Concact(head_1,...,head_8)W^O
+这里，我们假设 Q,K,V∈R^{512},W_i^Q,W_i^K,W_i^V∈R^{512\times64},W^O∈R^{512\times512},head_i∈R^{64}
+
