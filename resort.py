@@ -87,6 +87,9 @@ Q = torch.mul(inputs, query)
 K = torch.mul(inputs, key)
 V = torch.mul(inputs, value)
 
+print("Q:", Q)
+print("K:", K)
+print("V:", V)
 # 计算注意力得分
 output, attention_weights = attention_scores(Q, K, V)
 
