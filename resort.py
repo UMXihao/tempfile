@@ -84,9 +84,9 @@ key = state_dict['layers.0.self_attn.k_proj.weight']
 value = state_dict['layers.0.self_attn.v_proj.weight']
 
 # attention score
-Q = torch.matmul(inputs, query)
-K = torch.matmul(inputs, key)
-V = torch.matmul(inputs, value)
+Q = torch.matmul(query, inputs)
+K = torch.matmul(key, inputs)
+V = torch.matmul(value, inputs)
 
 print("Q:", Q)
 print("K:", K)
