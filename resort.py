@@ -74,6 +74,7 @@ self.attn qkvo 32 * 128 进行head拆分，计算多组数据集输入进行重�
 embed = state_dict['embed_tokens.weight']
 inputs = embed[random.randint(1, 32000)]
 
+inputs = torch.transpose(inputs.unsqueeze(0), 0, 1).squeeze(0)
 print("input:", inputs)
 
 dims = 4096
