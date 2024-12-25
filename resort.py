@@ -22,7 +22,7 @@ def attention_scores(Q, K, V, mask=None):
     # 计算Q和K的点积
     print("Q.size()", Q.size())
     print("Q.size(-1)", Q.size(-1))
-    scores = torch.matmul(Q, K.transpose(0, 1)) / math.sqrt(Q.size(-1))
+    scores = torch.matmul(Q, K.transpose(K.unsqueeze(0), 0, 1).squeeze(0)) / math.sqrt(Q.size(-1))
 
     # 如果有掩码，应用掩码
     if mask is not None:
