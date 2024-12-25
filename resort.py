@@ -1,7 +1,7 @@
 import random
 
 import torch
-import torch.nn.functional as F
+import torch.nn as nn
 import math
 from transformers import AutoModel, AutoTokenizer
 
@@ -28,7 +28,8 @@ def attention_scores(Q, K, V, mask=None):
         scores = scores.masked_fill(mask == 0, -1e9)
 
     # 应用softmax获取注意力权重
-    attention_weights = F.softmax(scores, dim=-1)
+    softmax = nn.Softmax(dim=1)
+    attention_weights = softmax(scores)
     print("attention_weights:", attention_weights)
     # 使用注意力权重对V进行加权
     output = torch.matmul(attention_weights, V)
