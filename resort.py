@@ -22,15 +22,14 @@ def attention_scores(Q, K, V, mask=None):
     # 计算Q和K的点积
     scores = torch.matmul(Q, torch.transpose(K.unsqueeze(0), 0, 1).squeeze(0)) / math.sqrt(Q.size(-1))
 
-    print("score:", scores)
+    print("score:", scores.shape)
     # 如果有掩码，应用掩码
     if mask is not None:
         scores = scores.masked_fill(mask == 0, -1e9)
 
     # 应用softmax获取注意力权重
-    softmax = nn.Softmax(dim=1)
-    attention_weights = softmax(scores)
-    print("attention_weights:", attention_weights)
+    attention_weights = torch.softmax(scores, dim=-1)
+    print("attention_weights:", attention_weights.shape)
     # 使用注意力权重对V进行加权
     output = torch.matmul(attention_weights, V)
 
