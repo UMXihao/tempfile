@@ -1,12 +1,12 @@
 = Design Process
 
-== I. Load Model by Row
+== I. Load Model by Row icon:已完成[role="green", title="已完成"]
 
 --split_mode, just support the load mode,value={row}
 
 --tensor_split, model sparsity, value={0.1, 0.2, 0.3, ..., 1}
 
-== II. Parallel Decoding
+== II. Parallel Decoding icon:已完成[role="green", title="已完成"]
 
 prefill phase: one batch
 
@@ -34,16 +34,14 @@ same prefill latency
 
 decode latency: slight increase of a few milliseconds
 
-icon:以上已完成[role="green", title="已完成"]
+== III. Similarity Calculation icon:已完成[role="green", title="已完成"]
 
-== III. Similarity Calculation
-
-. Embedding Collection icon:Processing[role="yellow", title="已完成"]
+. Embedding Collection
 . Cosine Similarity Calculation
 
 == IV. Offline Model Modification
 . Sparsity Analysis
-. Weight resort
+. Weight resort icon:Processing[role="yellow", title="process"]
 . Output new model
 
 == V. RL scheduler
@@ -60,3 +58,4 @@ head_i=Attention(Q_i,K_i,V_i),i=1,...,8
 MultiHead(Q,K,V)=Concact(head_1,...,head_8)W^O
 这里，我们假设 Q,K,V∈R^{512},W_i^Q,W_i^K,W_i^V∈R^{512\times64},W^O∈R^{512\times512},head_i∈R^{64}
 
+RL使用最简单的

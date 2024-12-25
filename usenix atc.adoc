@@ -134,6 +134,15 @@ image::structure.png[]
 
 2. 不能够根据事实数据进行策略调整
 
+=== 3.3 Parallel Decoding
+
+increase new KV Cache and Calculation
+
+.kv search
+image::kv search.png[]
+
+stem:[O(n - n_s)]
+
 === 3.3 Model tensor transpose loading
 
 为什么要这么设计？之前的设计有哪些？有哪些缺陷？困难点是什么？
