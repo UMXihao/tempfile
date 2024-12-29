@@ -1,12 +1,13 @@
 
-./llama-cli -m ../models/Llama-2-7b-hf-gguf/Llama-2-7b-hf-gguf.gguf -n 128 -p "What happens to you if you eat watermelon seeds?" --split_mode row --tensor_split 1
+./llama-cli -m ../models/Llama-2-7b-hf-gguf/Llama-2-7b-hf-gguf.gguf -n 128 -p "What happens to you if you eat watermelon seeds?" --split_mode row --tensor_split 1 --no-display-prompt
 
 ./llama-server -m ../models/Llama-2-7b-hf-gguf/Llama-2-7b-hf-gguf.gguf --split_mode row --tensor_split 1 --port 8080
 
 原始模型全部卸载到GPU的计算结果：
-./llama-cli -m ../../models/Llama-2-7b-hf-gguf/Llama-2-7b-hf-gguf.gguf -n 128 -p "What happens to you if you eat watermelon seeds?" -ngl 33
+./llama-cli -m ../../models/Llama-2-7b-hf-gguf/Llama-2-7b-hf-gguf.gguf -n 128 -p "What happens to you if you eat watermelon seeds?" -ngl 33 --no-display-prompt
 
 ./llama-cli -m ../../models/Llama-2-7b-hf-gguf/Llama-2-7b-hf-gguf.gguf -n 128 -f en-4k.txt -ngl 33 --no-display-prompt -c 4214
 
 ./llama-cli -m ../models/Llama-2-7b-hf-gguf/Llama-2-7b-hf-gguf.gguf -n 128 -f en-4k.txt --split_mode row --tensor_split 1 --no-display-prompt -c 4214
 
+./llama-embedding -m ../../models/Llama-2-7b-hf-gguf/Llama-2-7b-hf-gguf.gguf -p "What happens to you if you eat watermelon seeds?\nHow are you?" -ngl 33 --pooling mean > sunxh.txt
