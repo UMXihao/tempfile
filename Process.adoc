@@ -55,7 +55,7 @@ decode latency: slight increase of a few milliseconds
 
 LLaMA-Factory
 
-. pretrain dataset json
+. pretrain dataset json？
 
 == V. RL scheduler
 . Offline Training: Datasets with Latency and Accuracy
