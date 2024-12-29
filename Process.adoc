@@ -42,7 +42,20 @@ decode latency: slight increase of a few milliseconds
 == IV. Offline Model Modification
 . Sparsity Analysis
 . Weight resort icon:Processing[role="yellow", title="process"]
+. Head level gradient fine-tuning: Parameter Freezing
+
+    sparsity in {0.1, 0.2, 0.3, ..., 0.8, 0.9, 1}
+    n_head = [head * sparsity]
+    n_freeze_head = [head * (sparsity - 0.1)]
+    finetuning_parameters = n_head - n_freeze_head
+
 . Output new model
+
+针对目标数据集进行指令微调
+
+LLaMA-Factory
+
+. pretrain dataset json
 
 == V. RL scheduler
 . Offline Training: Datasets with Latency and Accuracy
