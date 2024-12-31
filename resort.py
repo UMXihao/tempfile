@@ -84,19 +84,30 @@ query = state_dict['layers.0.self_attn.q_proj.weight']
 key = state_dict['layers.0.self_attn.k_proj.weight']
 value = state_dict['layers.0.self_attn.v_proj.weight']
 
+sub_query = state_dict['layers.0.self_attn.q_proj.weight'][:, :512]
+sub_key = state_dict['layers.0.self_attn.k_proj.weight'][:512, :]
+sub_value = state_dict['layers.0.self_attn.v_proj.weight'][:, :512]
+state_dict['layers.0.self_attn.q_proj.weight'] = sub_query
+state_dict['layers.0.self_attn.k_proj.weight'] = sub_key
+state_dict['layers.0.self_attn.v_proj.weight'] = sub_value
+
+print("Q weight:", state_dict['layers.0.self_attn.q_proj.weight'])
+print("K weight:", state_dict['layers.0.self_attn.q_proj.weight'])
+print("V weight:", state_dict['layers.0.self_attn.q_proj.weight'])
+
 # attention score
-Q = torch.matmul(query, inputs)
-K = torch.matmul(key, inputs)
-V = torch.matmul(value, inputs)
+# Q = torch.matmul(query, inputs)
+# K = torch.matmul(key, inputs)
+# V = torch.matmul(value, inputs)
 
-print("Q:", Q)
-print("K:", K)
-print("V:", V)
-# 计算注意力得分
-output, attention_weights = attention_scores(Q, K, V)
-
-print("Attention Weights:", attention_weights)
-print("Output:", output)
+# print("Q:", Q)
+# print("K:", K)
+# print("V:", V)
+# # 计算注意力得分
+# output, attention_weights = attention_scores(Q, K, V)
+#
+# print("Attention Weights:", attention_weights)
+# print("Output:", output)
 
 # 读取FFN权重
 '''
