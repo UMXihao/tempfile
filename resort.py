@@ -5,7 +5,6 @@ import torch.nn as nn
 import math
 from transformers import AutoModel, AutoTokenizer
 
-
 def attention_scores(Q, K, V, mask=None):
     """
     计算注意力得分。
@@ -39,6 +38,16 @@ def attention_scores(Q, K, V, mask=None):
 model_name = '../../models/Llama-2-7b-hf'
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModel.from_pretrained(model_name)
+
+# reset model
+new_q_proj = torch.nn.Linear(512, 4096)
+new_k_proj = torch.nn.Linear(512, 4096)
+new_v_proj = torch.nn.Linear(512, 4096)
+
+for layer in model.layers:
+    layer.self_attn.q_proj = new_q_proj
+    layer.self_attn.k_proj = new_k_proj
+    layer.self_attn.v_proj = new_v_proj
 
 # 读取QKV权重
 '''
@@ -77,23 +86,14 @@ inputs = embed[random.randint(1, 32000)]
 inputs = torch.transpose(inputs.unsqueeze(0), 0, 1).squeeze(0)
 print("input:", inputs)
 
-dims = 4096
-
 # 按照head头进行权重拆分
 query = state_dict['layers.0.self_attn.q_proj.weight']
 key = state_dict['layers.0.self_attn.k_proj.weight']
 value = state_dict['layers.0.self_attn.v_proj.weight']
 
-sub_query = state_dict['layers.0.self_attn.q_proj.weight'][:, :512]
-sub_key = state_dict['layers.0.self_attn.k_proj.weight'][:512, :]
-sub_value = state_dict['layers.0.self_attn.v_proj.weight'][:, :512]
-state_dict['layers.0.self_attn.q_proj.weight'] = sub_query
-state_dict['layers.0.self_attn.k_proj.weight'] = sub_key
-state_dict['layers.0.self_attn.v_proj.weight'] = sub_value
-
-print("Q weight:", state_dict['layers.0.self_attn.q_proj.weight'])
-print("K weight:", state_dict['layers.0.self_attn.q_proj.weight'])
-print("V weight:", state_dict['layers.0.self_attn.q_proj.weight'])
+print("Q weight:", query.shape)
+print("K weight:", key.shape)
+print("V weight:", value.shape)
 
 # attention score
 # Q = torch.matmul(query, inputs)
