@@ -35,43 +35,33 @@ def attention_scores(Q, K, V, mask=None):
     return output, attention_weights
 
 # 模型输入
-model_name = '../../models/lora_10_llama2_7b'
+model_name = '../../models/lora-llama2-7b-P10'
 tokenizer = AutoTokenizer.from_pretrained(model_name)
+# tokenizer.save_pretrained('../../models/Llama-2-7b-hf-P10')
 model = AutoModel.from_pretrained(model_name)
 
-# reset model
-new_q_proj = torch.nn.Linear(512, 4096)
-new_k_proj = torch.nn.Linear(512, 4096)
-new_v_proj = torch.nn.Linear(512, 4096)
+# for param in model.parameters():
+#     print(param)
 
-for layer in model.layers:
-    layer.self_attn.q_proj = new_q_proj
-    layer.self_attn.k_proj = new_k_proj
-    layer.self_attn.v_proj = new_v_proj
-
-# 读取QKV权重
-'''
-# model weights
-
-embed_tokens.weight 32000*4096
-
-layers.0.self_attn.q_proj.weight 4096*4096
-layers.0.self_attn.k_proj.weight 4096*4096
-layers.0.self_attn.v_proj.weight 4096*4096
-layers.0.self_attn.o_proj.weight 4096*4096
-
-layers.0.mlp.gate_proj.weight 11008*4096
-layers.0.mlp.up_proj.weight 11008*4096
-layers.0.mlp.down_proj.weight 4096*11008
-
-layers.0.input_layernorm.weight 4096
-layers.0.post_attention_layernorm.weight 4096
-
-... layers
-
-norm.weight 4096
-'''
+# for name, param in model.named_parameters():
+#     # 冻结除了指定层之外的所有参数
+#     if "self_attn" not in name:
+#         param.requires_grad = False
+#
+# for name, param in model.named_parameters():
+#     print(name, " requires_grad = ", param.requires_grad)
+#
+# for layer in model.layers:
+#     layer.self_attn.q_proj.weight.data[:, 512:] = 0
+#     layer.self_attn.k_proj.weight.data[:, 512:] = 0
+#     layer.self_attn.v_proj.weight.data[:, 512:] = 0
+#     layer.self_attn.o_proj.weight.data[512:, :] = 0
+# #
 state_dict = model.state_dict()
+
+print(state_dict['layers.0.self_attn.q_proj.weight'])
+#
+# model.save_pretrained('../../models/Llama-2-7b-hf-P10')
 
 # 重新排序权重
 '''
@@ -80,20 +70,20 @@ self.attn qkvo 32 * 128 进行head拆分，计算多组数据集输入进行重�
 计算XQi与全部KV的注意力得分，最高的将优先加载
 '''
 # 输入X可以遍历取值embed_tokens.weight
-embed = state_dict['embed_tokens.weight']
-inputs = embed[random.randint(1, 32000)]
-
-inputs = torch.transpose(inputs.unsqueeze(0), 0, 1).squeeze(0)
-print("input:", inputs)
-
-# 按照head头进行权重拆分
-query = state_dict['layers.0.self_attn.q_proj.weight']
-key = state_dict['layers.0.self_attn.k_proj.weight']
-value = state_dict['layers.0.self_attn.v_proj.weight']
-
-print("Q weight:", query.shape)
-print("K weight:", key.shape)
-print("V weight:", value.shape)
+# embed = state_dict['embed_tokens.weight']
+# inputs = embed[random.randint(1, 32000)]
+#
+# inputs = torch.transpose(inputs.unsqueeze(0), 0, 1).squeeze(0)
+# print("input:", inputs)
+#
+# # 按照head头进行权重拆分
+# query = state_dict['layers.0.self_attn.q_proj.weight']
+# key = state_dict['layers.0.self_attn.k_proj.weight']
+# value = state_dict['layers.0.self_attn.v_proj.weight']
+#
+# print("Q weight:", query.shape)
+# print("K weight:", key.shape)
+# print("V weight:", value.shape)
 
 # attention score
 # Q = torch.matmul(query, inputs)
