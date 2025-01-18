@@ -55,7 +55,68 @@ decode latency: slight increase of a few milliseconds
 
 LLaMA-Factory
 
-. pretrain dataset json？
+. 直接设置QKV的权重维度为512
+
+    ValueError: Trying to set a tensor of shape torch.Size([4096, 4096]) in "weight" (which has shape torch.Size([512, 4096])), this looks incorrect.
+
+. 新建模型QKV的权重维度为512，head数量为32，应该是4才能对应上2*272*4*128 = 278528
+
+    RuntimeError: shape '[2, 272, 32, 128]' is invalid for input of size 278528
+
+. 设置head数量为4，head_dim计算不是4096/32=128，变成4096/4=1024，维度错误
+
+    RuntimeError: shape '[2, 96, 4, 1024]' is invalid for input of size 98304
+
+Transformer LlamaAttention
+
+LlamaConfig中新增自定义参数sparsity，用于选择训练权重
+
+LlamaForCausalLM -> LlamaModel -> LlamaDecoderLayer -> LlamaAttention
+
+使用LLaMA-Factory可以使用的数据集wiki/c4
+
+LoFit 支撑了MHA的可解析性
+
+image::LoFit.png[]
+
+    选取部分主力头的注意力进行表征干扰，和微调不同的是不会对原始参数进行修改，是对计算完的注意力得分进行单独的偏移微调。
+
+
+
+. 已完成训练过程通过掩码技术，加载部分head权重参与训练
+. 已完成只针对self_attention的权重进行微调
+. llama2-7B的微调和模型融合过程无法过度量化处理，使用24G GPU可能出现OOM
+. LoRA微调依旧是全部hidden_dims 4096*4096更新，如果定义LoRA权重维度为4096*512的权重，训练完成的LoRA模型无法正常加载。
+. 正在修改transformer的optimizer，只对指定位置的head相关的权重进行参数微调
+
+15-01-2025
+
+llama-2-7b-hf
+image:llama-2-7b-hf.png[]
+llama-2-7b-hf-P10 截取512列，也就是一个注意力头参与推理和训练
+image:llama-2-7b-P10.png[]
+self-attn-lora-P10 将lora的512列之外的requires_grad设置为False
+image:self-attn-lora-P10.png[]
+all-false-lora-P10 将lora的512列之外的requires_grad设置为False
+image:all-false-lora-P10.png[]
+使用lora+自定义optimizer
+image:lora_error.png[]
+
+.Head Gradient LoRA Fine-Tuning 实现
+1. 裁剪0.1稀疏性Self-Attn Head的模型进行模型训练，其他Head的参数全部设置为0，为了便于观察没有对其他参数权重进行更新。使用torch.save(),保存该模型用于微调
+2. 自定义optimizer，对应Head只对目标Head对应的参数进行梯度更新。判断张量n列/n行到4096的参数全部为0，grad也对应设置为0，这里因为要冻结上一个head，所以前面的head级对应的列/行也要设置为0.
+3. 等0.1微调完成，将与0.2的进行merge，然后参与微调。
+
+修改前，可训练的参数: 19988480
+对于添加适配的模型的除了self-attn之外的参数全部屏蔽，可训练率 0.2958%
+
+修改后，可训练的参数: 8338608，可训练率 0.1241%
+
+P10参数
+image:origin_qkvo.png[]
+
+merge_lora1参数
+image:merge_lora.png[]
 
 == V. RL scheduler
 . Offline Training: Datasets with Latency and Accuracy
@@ -72,3 +133,11 @@ MultiHead(Q,K,V)=Concact(head_1,...,head_8)W^O
 这里，我们假设 Q,K,V∈R^{512},W_i^Q,W_i^K,W_i^V∈R^{512\times64},W^O∈R^{512\times512},head_i∈R^{64}
 
 RL使用最简单的
+
+baseline：
+.llamacpp
+.PowerInfer
+
+.ELMS
+
+推理速度提升
