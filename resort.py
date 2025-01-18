@@ -35,7 +35,9 @@ def attention_scores(Q, K, V, mask=None):
     return output, attention_weights
 
 # 模型输入
-model_name = '../../models/lora-llama2-7b-P10'
+# model_name = '../../models/Llama-2-7b-hf'
+# model_name = '../../models/Llama-2-7b-hf-P10'
+model_name = '../../models/all-false-lora-P10'
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 # tokenizer.save_pretrained('../../models/Llama-2-7b-hf-P10')
 model = AutoModel.from_pretrained(model_name)
