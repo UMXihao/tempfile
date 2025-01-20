@@ -102,6 +102,29 @@ image:all-false-lora-P10.png[]
 使用lora+自定义optimizer
 image:lora_error.png[]
 
+1. MLP的裁剪对于模型的影响较大
+2. 后续level的参数更新会修改前绪的微调结果
+
+.ELMS Fine-Tuning
+image::ELMS Fine-tuning.png[]
+
+
+1. 不同rank的参数更新是互补影响的
+2. 与DyLora不同的是，我们没有修改rank的大小
+3. 与DyLora不同的是，原始模型只有部分参数参与训练
+
+.DyLoRA Fine-Tuning
+image::DyLoRA Fine-Tuning.png[]
+
+1. 只针对self-attention的权重进行微调，对模型的输出结果影响较小
+2. 不同head的权重更新不会影响到其他head的权重更新
+
+.Head Gradient LoRA Fine-Tuning
+image::Head Gradient LoRA Fine-Tuning.png[]
+
+.Fine-Tuning Process
+image::Model Fine-Tuning Process.png[]
+
 .Head Gradient LoRA Fine-Tuning 实现
 1. 裁剪0.1稀疏性Self-Attn Head的模型进行模型训练，其他Head的参数全部设置为0，为了便于观察没有对其他参数权重进行更新。使用torch.save(),保存该模型用于微调
 2. 自定义optimizer，对应Head只对目标Head对应的参数进行梯度更新。判断张量n列/n行到4096的参数全部为0，grad也对应设置为0，这里因为要冻结上一个head，所以前面的head级对应的列/行也要设置为0.
@@ -117,6 +140,12 @@ image:origin_qkvo.png[]
 
 merge_lora1参数
 image:merge_lora.png[]
+
+使用PiSSa初始化Lora权重，peft_model中需要重置 config.r = 16
+
+使用目标数据集进行验证
+
+
 
 == V. RL scheduler
 . Offline Training: Datasets with Latency and Accuracy
