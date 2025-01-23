@@ -35,11 +35,11 @@ def attention_scores(Q, K, V, mask=None):
     return output, attention_weights
 
 # 模型输入
-# model_name = '../../models/Llama-2-7b-hf'
+model_name = '../../models/Llama-2-7b-hf'
 # model_name = '../../models/Llama-2-7b-hf-P10'
-model_name = '../../models/all-false-lora-P10'
+# model_name = '../../models/all-false-lora-P10'
 tokenizer = AutoTokenizer.from_pretrained(model_name)
-# tokenizer.save_pretrained('../../models/Llama-2-7b-hf-P10')
+tokenizer.save_pretrained('../../models/Llama-2-7b-hf-P20')
 model = AutoModel.from_pretrained(model_name)
 
 # for param in model.parameters():
@@ -53,17 +53,17 @@ model = AutoModel.from_pretrained(model_name)
 # for name, param in model.named_parameters():
 #     print(name, " requires_grad = ", param.requires_grad)
 #
-# for layer in model.layers:
-#     layer.self_attn.q_proj.weight.data[:, 512:] = 0
-#     layer.self_attn.k_proj.weight.data[:, 512:] = 0
-#     layer.self_attn.v_proj.weight.data[:, 512:] = 0
-#     layer.self_attn.o_proj.weight.data[512:, :] = 0
+for layer in model.layers:
+    layer.self_attn.q_proj.weight.data[:, 896:] = 0
+    layer.self_attn.k_proj.weight.data[:, 896:] = 0
+    layer.self_attn.v_proj.weight.data[:, 896:] = 0
+    layer.self_attn.o_proj.weight.data[896:, :] = 0
 # #
-state_dict = model.state_dict()
+# state_dict = model.state_dict()
 
-print(state_dict['layers.0.self_attn.q_proj.weight'])
-#
-# model.save_pretrained('../../models/Llama-2-7b-hf-P10')
+# print(state_dict['layers.0.self_attn.q_proj.weight'])
+
+model.save_pretrained('../../models/Llama-2-7b-hf-P20')
 
 # 重新排序权重
 '''
