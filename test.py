@@ -2,7 +2,7 @@ import torch
 import math
 
 n = 32
-print(math.ceil(0.2 * 32) * 128)
+print(math.ceil(1.0 * 32) * 128)
 
 # 假设 A 是一个 4096 x 4096 的张量
 # A = torch.randn(5, 5)
@@ -15,18 +15,22 @@ print(math.ceil(0.2 * 32) * 128)
 # A[2:, :] = 0
 # print(A)
 
-# # 创建一个示例张量
+# 创建一个示例张量
 # tensor = torch.tensor([
 #     [0, 0, 1, 4, 0],
 #     [0, 0, 2, 5, 0],
 #     [0, 0, 3, 6, 0]
 # ])
-# tensor = torch.tensor([
+# tensor2 = torch.tensor([
 #     [1, 2, 3, 4, 5],
-#     [0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0]
+#     [2, 2, 0, 0, 0],
+#     [3, 3, 0, 0, 0]
 # ])
 #
+# tensor2[:, :4] = 0
+#
+# print(tensor2)
+# 指定行的范围
 # # 指定列的范围
 # n = 2
 # m = 3
