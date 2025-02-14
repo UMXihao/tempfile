@@ -29,9 +29,9 @@ if sparsity > 0.1:
     for idx in range(len(model.layers)):
         last_layer = last_model.layers[idx]
         layer = model.layers[idx]
-        layer.self_attn.q_proj.weight.data[:, :last_sparsity] = last_layer.self_attn.q_proj.weight.data[:, :last_sparsity]
-        layer.self_attn.k_proj.weight.data[:, :last_sparsity] = last_layer.self_attn.q_proj.weight.data[:, :last_sparsity]
-        layer.self_attn.v_proj.weight.data[:, :last_sparsity] = last_layer.self_attn.q_proj.weight.data[:, :last_sparsity]
-        layer.self_attn.o_proj.weight.data[:last_sparsity, :] = last_layer.self_attn.o_proj.weight.data[:last_sparsity, :]
+        layer.self_attn.q_proj.weight.data[:, :last_gradient] = last_layer.self_attn.q_proj.weight.data[:, :last_gradient]
+        layer.self_attn.k_proj.weight.data[:, :last_gradient] = last_layer.self_attn.q_proj.weight.data[:, :last_gradient]
+        layer.self_attn.v_proj.weight.data[:, :last_gradient] = last_layer.self_attn.q_proj.weight.data[:, :last_gradient]
+        layer.self_attn.o_proj.weight.data[:last_gradient, :] = last_layer.self_attn.o_proj.weight.data[:last_gradient, :]
 
 model.save_pretrained(target_dir)
