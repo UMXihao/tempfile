@@ -1,0 +1,203 @@
+./llama-cli -m ../models/Llama-2-7b-hf-gguf/Llama-2-7b-hf-INT4-gguf.gguf -n 128 --no-display-prompt -f en-4k.txt -c 5000 -ngl 32
+
+0层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.57 ms /  4338 runs   (    0.00 ms per token, 573430.27 tokens per second)
+llama_perf_context_print:        load time =    2854.35 ms
+llama_perf_context_print: prompt eval time =  112300.84 ms /  4210 tokens (   26.67 ms per token,    37.49 tokens per second)
+llama_perf_context_print:        eval time =   70780.37 ms /   127 runs   (  557.33 ms per token,     1.79 tokens per second)
+llama_perf_context_print:       total time =  183126.07 ms /  4337 tokens
+1层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.61 ms /  4338 runs   (    0.00 ms per token, 570189.27 tokens per second)
+llama_perf_context_print:        load time =    3575.91 ms
+llama_perf_context_print: prompt eval time =  109312.80 ms /  4210 tokens (   25.97 ms per token,    38.51 tokens per second)
+llama_perf_context_print:        eval time =   67943.08 ms /   127 runs   (  534.98 ms per token,     1.87 tokens per second)
+llama_perf_context_print:       total time =  177300.08 ms /  4337 tokens
+2层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.52 ms /  4338 runs   (    0.00 ms per token, 577015.16 tokens per second)
+llama_perf_context_print:        load time =    3788.83 ms
+llama_perf_context_print: prompt eval time =  105787.09 ms /  4210 tokens (   25.13 ms per token,    39.80 tokens per second)
+llama_perf_context_print:        eval time =   64657.61 ms /   127 runs   (  509.12 ms per token,     1.96 tokens per second)
+llama_perf_context_print:       total time =  170487.30 ms /  4337 tokens
+3层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.04 ms /  4338 runs   (    0.00 ms per token, 615843.27 tokens per second)
+llama_perf_context_print:        load time =    4556.85 ms
+llama_perf_context_print: prompt eval time =  102596.77 ms /  4210 tokens (   24.37 ms per token,    41.03 tokens per second)
+llama_perf_context_print:        eval time =   64627.04 ms /   127 runs   (  508.87 ms per token,     1.97 tokens per second)
+llama_perf_context_print:       total time =  167261.47 ms /  4337 tokens
+4层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.77 ms /  4338 runs   (    0.00 ms per token, 558301.16 tokens per second)
+llama_perf_context_print:        load time =    4745.42 ms
+llama_perf_context_print: prompt eval time =   99156.32 ms /  4210 tokens (   23.55 ms per token,    42.46 tokens per second)
+llama_perf_context_print:        eval time =   63730.32 ms /   127 runs   (  501.81 ms per token,     1.99 tokens per second)
+llama_perf_context_print:       total time =  162932.21 ms /  4337 tokens
+5层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.04 ms /  4338 runs   (    0.00 ms per token, 616193.18 tokens per second)
+llama_perf_context_print:        load time =    4969.11 ms
+llama_perf_context_print: prompt eval time =   95475.16 ms /  4210 tokens (   22.68 ms per token,    44.10 tokens per second)
+llama_perf_context_print:        eval time =   60987.41 ms /   127 runs   (  480.22 ms per token,     2.08 tokens per second)
+llama_perf_context_print:       total time =  156499.99 ms /  4337 tokens
+6层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.53 ms /  4338 runs   (    0.00 ms per token, 576478.41 tokens per second)
+llama_perf_context_print:        load time =    5060.47 ms
+llama_perf_context_print: prompt eval time =   92179.63 ms /  4210 tokens (   21.90 ms per token,    45.67 tokens per second)
+llama_perf_context_print:        eval time =   58015.56 ms /   127 runs   (  456.82 ms per token,     2.19 tokens per second)
+llama_perf_context_print:       total time =  150238.75 ms /  4337 tokens
+7层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.64 ms /  4338 runs   (    0.00 ms per token, 567949.73 tokens per second)
+llama_perf_context_print:        load time =    5309.57 ms
+llama_perf_context_print: prompt eval time =   88659.67 ms /  4210 tokens (   21.06 ms per token,    47.48 tokens per second)
+llama_perf_context_print:        eval time =   57215.34 ms /   127 runs   (  450.51 ms per token,     2.22 tokens per second)
+llama_perf_context_print:       total time =  145918.01 ms /  4337 tokens
+8层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.76 ms /  4338 runs   (    0.00 ms per token, 558732.61 tokens per second)
+llama_perf_context_print:        load time =    5523.03 ms
+llama_perf_context_print: prompt eval time =   85235.27 ms /  4210 tokens (   20.25 ms per token,    49.39 tokens per second)
+llama_perf_context_print:        eval time =   55050.79 ms /   127 runs   (  433.47 ms per token,     2.31 tokens per second)
+llama_perf_context_print:       total time =  140331.55 ms /  4337 tokens
+9层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.38 ms /  4338 runs   (    0.00 ms per token, 587566.03 tokens per second)
+llama_perf_context_print:        load time =    5730.91 ms
+llama_perf_context_print: prompt eval time =   81645.72 ms /  4210 tokens (   19.39 ms per token,    51.56 tokens per second)
+llama_perf_context_print:        eval time =   51985.20 ms /   127 runs   (  409.33 ms per token,     2.44 tokens per second)
+llama_perf_context_print:       total time =  133674.09 ms /  4337 tokens
+10层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.64 ms /  4338 runs   (    0.00 ms per token, 567652.45 tokens per second)
+llama_perf_context_print:        load time =    5917.00 ms
+llama_perf_context_print: prompt eval time =   78051.15 ms /  4210 tokens (   18.54 ms per token,    53.94 tokens per second)
+llama_perf_context_print:        eval time =   48755.37 ms /   127 runs   (  383.90 ms per token,     2.60 tokens per second)
+llama_perf_context_print:       total time =  126850.27 ms /  4337 tokens
+11层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.65 ms /  4338 runs   (    0.00 ms per token, 567132.96 tokens per second)
+llama_perf_context_print:        load time =    6070.55 ms
+llama_perf_context_print: prompt eval time =   74959.51 ms /  4210 tokens (   17.81 ms per token,    56.16 tokens per second)
+llama_perf_context_print:        eval time =   47121.31 ms /   127 runs   (  371.03 ms per token,     2.70 tokens per second)
+llama_perf_context_print:       total time =  122124.74 ms /  4337 tokens
+12层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.42 ms /  4338 runs   (    0.00 ms per token, 584872.59 tokens per second)
+llama_perf_context_print:        load time =    6181.68 ms
+llama_perf_context_print: prompt eval time =   71066.65 ms /  4210 tokens (   16.88 ms per token,    59.24 tokens per second)
+llama_perf_context_print:        eval time =   45396.23 ms /   127 runs   (  357.45 ms per token,     2.80 tokens per second)
+llama_perf_context_print:       total time =  116506.90 ms /  4337 tokens
+13层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.64 ms /  4338 runs   (    0.00 ms per token, 567726.74 tokens per second)
+llama_perf_context_print:        load time =    6556.05 ms
+llama_perf_context_print: prompt eval time =   67611.61 ms /  4210 tokens (   16.06 ms per token,    62.27 tokens per second)
+llama_perf_context_print:        eval time =   43980.99 ms /   127 runs   (  346.31 ms per token,     2.89 tokens per second)
+llama_perf_context_print:       total time =  111637.45 ms /  4337 tokens
+14层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.68 ms /  4338 runs   (    0.00 ms per token, 565138.09 tokens per second)
+llama_perf_context_print:        load time =    6574.24 ms
+llama_perf_context_print: prompt eval time =   64292.52 ms /  4210 tokens (   15.27 ms per token,    65.48 tokens per second)
+llama_perf_context_print:        eval time =   41813.40 ms /   127 runs   (  329.24 ms per token,     3.04 tokens per second)
+llama_perf_context_print:       total time =  106151.18 ms /  4337 tokens
+15层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.80 ms /  4338 runs   (    0.00 ms per token, 556367.83 tokens per second)
+llama_perf_context_print:        load time =    6756.29 ms
+llama_perf_context_print: prompt eval time =   60901.71 ms /  4210 tokens (   14.47 ms per token,    69.13 tokens per second)
+llama_perf_context_print:        eval time =   40088.75 ms /   127 runs   (  315.66 ms per token,     3.17 tokens per second)
+llama_perf_context_print:       total time =  101035.46 ms /  4337 tokens
+16层分配到GPU：
+llama_perf_sampler_print:    sampling time =       7.33 ms /  4338 runs   (    0.00 ms per token, 592218.43 tokens per second)
+llama_perf_context_print:        load time =    6965.37 ms
+llama_perf_context_print: prompt eval time =   57343.53 ms /  4210 tokens (   13.62 ms per token,    73.42 tokens per second)
+llama_perf_context_print:        eval time =   37128.82 ms /   127 runs   (  292.35 ms per token,     3.42 tokens per second)
+llama_perf_context_print:       total time =   94517.32 ms /  4337 tokens
+17层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.48 ms /  4338 runs   (    0.00 ms per token, 579869.00 tokens per second)
+llama_perf_context_print:        load time =    7133.91 ms
+llama_perf_context_print: prompt eval time =   53811.08 ms /  4210 tokens (   12.78 ms per token,    78.24 tokens per second)
+llama_perf_context_print:        eval time =   35635.19 ms /   127 runs   (  280.59 ms per token,     3.56 tokens per second)
+llama_perf_context_print:       total time =   89491.00 ms /  4337 tokens
+18层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.39 ms /  4338 runs   (    0.00 ms per token, 586771.27 tokens per second)
+llama_perf_context_print:        load time =    7407.72 ms
+llama_perf_context_print: prompt eval time =   50406.42 ms /  4210 tokens (   11.97 ms per token,    83.52 tokens per second)
+llama_perf_context_print:        eval time =   33115.40 ms /   127 runs   (  260.75 ms per token,     3.84 tokens per second)
+llama_perf_context_print:       total time =   83565.44 ms /  4337 tokens
+19层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.46 ms /  4338 runs   (    0.00 ms per token, 581111.86 tokens per second)
+llama_perf_context_print:        load time =    7481.42 ms
+llama_perf_context_print: prompt eval time =   46966.35 ms /  4210 tokens (   11.16 ms per token,    89.64 tokens per second)
+llama_perf_context_print:        eval time =   31506.43 ms /   127 runs   (  248.08 ms per token,     4.03 tokens per second)
+llama_perf_context_print:       total time =   78515.36 ms /  4337 tokens
+20层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.75 ms /  4338 runs   (    0.00 ms per token, 559381.04 tokens per second)
+llama_perf_context_print:        load time =    7801.53 ms
+llama_perf_context_print: prompt eval time =   43399.70 ms /  4210 tokens (   10.31 ms per token,    97.01 tokens per second)
+llama_perf_context_print:        eval time =   28715.15 ms /   127 runs   (  226.10 ms per token,     4.42 tokens per second)
+llama_perf_context_print:       total time =   72159.25 ms /  4337 tokens
+21层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.34 ms /  4338 runs   (    0.00 ms per token, 590847.18 tokens per second)
+llama_perf_context_print:        load time =    8068.02 ms
+llama_perf_context_print: prompt eval time =   40160.65 ms /  4210 tokens (    9.54 ms per token,   104.83 tokens per second)
+llama_perf_context_print:        eval time =   27172.07 ms /   127 runs   (  213.95 ms per token,     4.67 tokens per second)
+llama_perf_context_print:       total time =   67375.60 ms /  4337 tokens
+22层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.50 ms /  4338 runs   (    0.00 ms per token, 578322.89 tokens per second)
+llama_perf_context_print:        load time =    8266.19 ms
+llama_perf_context_print: prompt eval time =   36707.85 ms /  4210 tokens (    8.72 ms per token,   114.69 tokens per second)
+llama_perf_context_print:        eval time =   24683.06 ms /   127 runs   (  194.35 ms per token,     5.15 tokens per second)
+llama_perf_context_print:       total time =   61435.41 ms /  4337 tokens
+23层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.22 ms /  4338 runs   (    0.00 ms per token, 600914.25 tokens per second)
+llama_perf_context_print:        load time =    8356.16 ms
+llama_perf_context_print: prompt eval time =   33106.89 ms /  4210 tokens (    7.86 ms per token,   127.16 tokens per second)
+llama_perf_context_print:        eval time =   22960.72 ms /   127 runs   (  180.79 ms per token,     5.53 tokens per second)
+llama_perf_context_print:       total time =   56112.17 ms /  4337 tokens
+24层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.52 ms /  4338 runs   (    0.00 ms per token, 577168.71 tokens per second)
+llama_perf_context_print:        load time =    8653.44 ms
+llama_perf_context_print: prompt eval time =   29632.99 ms /  4210 tokens (    7.04 ms per token,   142.07 tokens per second)
+llama_perf_context_print:        eval time =   20643.00 ms /   127 runs   (  162.54 ms per token,     6.15 tokens per second)
+llama_perf_context_print:       total time =   50316.35 ms /  4337 tokens
+25层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.19 ms /  4338 runs   (    0.00 ms per token, 603421.89 tokens per second)
+llama_perf_context_print:        load time =    8986.85 ms
+llama_perf_context_print: prompt eval time =   26203.28 ms /  4210 tokens (    6.22 ms per token,   160.67 tokens per second)
+llama_perf_context_print:        eval time =   18659.71 ms /   127 runs   (  146.93 ms per token,     6.81 tokens per second)
+llama_perf_context_print:       total time =   44903.66 ms /  4337 tokens
+26层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.16 ms /  4338 runs   (    0.00 ms per token, 606035.21 tokens per second)
+llama_perf_context_print:        load time =    8993.36 ms
+llama_perf_context_print: prompt eval time =   22579.88 ms /  4210 tokens (    5.36 ms per token,   186.45 tokens per second)
+llama_perf_context_print:        eval time =   16185.83 ms /   127 runs   (  127.45 ms per token,     7.85 tokens per second)
+llama_perf_context_print:       total time =   38806.31 ms /  4337 tokens
+27层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.51 ms /  4338 runs   (    0.00 ms per token, 577860.66 tokens per second)
+llama_perf_context_print:        load time =    9202.23 ms
+llama_perf_context_print: prompt eval time =   19138.95 ms /  4210 tokens (    4.55 ms per token,   219.97 tokens per second)
+llama_perf_context_print:        eval time =   14105.72 ms /   127 runs   (  111.07 ms per token,     9.00 tokens per second)
+llama_perf_context_print:       total time =   33287.26 ms /  4337 tokens
+28层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.13 ms /  4338 runs   (    0.00 ms per token, 608500.49 tokens per second)
+llama_perf_context_print:        load time =    9438.37 ms
+llama_perf_context_print: prompt eval time =   15726.69 ms /  4210 tokens (    3.74 ms per token,   267.70 tokens per second)
+llama_perf_context_print:        eval time =   12177.28 ms /   127 runs   (   95.88 ms per token,    10.43 tokens per second)
+llama_perf_context_print:       total time =   27945.13 ms /  4337 tokens
+29层分配到GPU:
+llama_perf_sampler_print:    sampling time =       7.35 ms /  4338 runs   (    0.00 ms per token, 590043.53 tokens per second)
+llama_perf_context_print:        load time =    9562.47 ms
+llama_perf_context_print: prompt eval time =   12231.04 ms /  4210 tokens (    2.91 ms per token,   344.21 tokens per second)
+llama_perf_context_print:        eval time =   10092.39 ms /   127 runs   (   79.47 ms per token,    12.58 tokens per second)
+llama_perf_context_print:       total time =   22364.83 ms /  4337 tokens
+30层分配到GPU:
+llama_perf_sampler_print:    sampling time =       5.96 ms /  4338 runs   (    0.00 ms per token, 727486.16 tokens per second)
+llama_perf_context_print:        load time =    9825.74 ms
+llama_perf_context_print: prompt eval time =    8786.29 ms /  4210 tokens (    2.09 ms per token,   479.16 tokens per second)
+llama_perf_context_print:        eval time =    8064.30 ms /   127 runs   (   63.50 ms per token,    15.75 tokens per second)
+llama_perf_context_print:       total time =   16887.29 ms /  4337 tokens
+31层分配到GPU:
+llama_perf_sampler_print:    sampling time =       8.67 ms /  4338 runs   (    0.00 ms per token, 500576.97 tokens per second)
+llama_perf_context_print:        load time =   10024.06 ms
+llama_perf_context_print: prompt eval time =    5367.97 ms /  4210 tokens (    1.28 ms per token,   784.28 tokens per second)
+llama_perf_context_print:        eval time =    5819.60 ms /   127 runs   (   45.82 ms per token,    21.82 tokens per second)
+llama_perf_context_print:       total time =   11226.79 ms /  4337 tokens
+32层分配到GPU：
+llama_perf_sampler_print:    sampling time =       8.82 ms /  4338 runs   (    0.00 ms per token, 491948.29 tokens per second)
+llama_perf_context_print:        load time =   10249.29 ms
+llama_perf_context_print: prompt eval time =    1952.80 ms /  4210 tokens (    0.46 ms per token,  2155.88 tokens per second)
+llama_perf_context_print:        eval time =    3677.98 ms /   127 runs   (   28.96 ms per token,    34.53 tokens per second)
+llama_perf_context_print:       total time =    5670.09 ms /  4337 tokens
+
+
+
