@@ -1,0 +1,223 @@
+= Dynamic Elastic Multi-LoRA Model on-device Inference
+Xihao Sun <sunxh2016@lzu.edu.cn>
+:toc:
+:icons: font
+:url-quickref: https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
+
+第一阶段基本是在仿照ELMS的问题设定进行设计和实验，既缺少自己对问题设定的思考，又缺少问题场景数据的支撑，导致没有实际的创新点。 第二阶段要脱离ELMS的问题设定，针对弹性模型进行深入的探究，结合设计详细阐述问题场景。弹性模型，本质是对模型进行削减，实现效果就是资源和延迟的减少，如果按照精度至上的道路走就是在背道而驰。
+
+== Motivation
+**LLM on-device**凭借**data localization**的特性展现的**low-latency**和**data security**footnote:[Xu, Jiajun, Zhiyuan Li, Wei Chen, Qun Wang, Xin Gao, Qi Cai, and Ziyuan Ling. "On-device language models: A comprehensive review." arXiv preprint arXiv:2409.00088 (2024).]，正在获得日益增长的关注度。为适配丰富的下游任务，采用单模型多lora（Single Model & Multi-LoRA）是最优的解决范式。然而，设备上紧张的资源限制了模型的部署，尽管最近已经有很多努力去减少设备上的模型部署开销，但是资源需求是动态变化的，现有的设备上模型部署框架无法针对资源的变化进行自适应的调整。
+
+8bit量化 7B模型，显存占用 大约在7G 左右，假设在一个12G的GPU上其他任务超过5G的显存占用，现有工作一般会显示模型加载失败或者OOM，无法执行推理工作。
+
+GPU对应的显存大小：
+https://en.wikipedia.org/wiki/List_of_Nvidia_graphics_processing_units
+
+== Related Works
+On-Cloud
+在云平台上运行一个模型出现资源不足场景时，可以通过增加节点资源或者是增加单个阶段上的资源。
+
+Exist works on device model deployment.
+
+* Compression
+** Quantization
+** Pruning
+** Knowledge Distillation
+
+动态性问题描述
+
+以上模型压缩方法均属于静态模型压缩，依旧无法针对资源的变化进行自适应的调整，必须等待资源空闲才能启动推理工作。
+
+** Dynamic Quantizationfootnote:[Park, Yeonhong, Jake Hyun, SangLyul Cho, Bonggeun Sim, and Jae W. Lee. "Any-precision LLM: Low-cost deployment of multiple, different-sized LLMs." arXiv preprint arXiv:2402.10517 (2024).]
+
+Testbed: RTX 4070, RTX 4090, Jetson AGX Orin 64 GB
+
+.Memory Analysis of Any-precision LLM for Llama-2-7B.
+|===
+|Supported Bit-widths|Any-Precision LLM
+|{3,6}               |5.6 GB
+|{4,8}               |7.7 GB
+|{3,4,6}             |5.6 GB
+|{3,4,8}             |7.7 GB
+|{3,4,6,8}           |7.9 GB
+|{3,4,5,6,7,8}       |8.4 GB
+|===
+
+.Memory Analysis of DEML for Llama-2-7B INT8.
+|===
+|Elastic Level|Any-Precision LLM
+|1            |4.81 GB
+|...          |...
+|10           |6.67 GB
+|===
+
+Any-precision LLM对于Llama-2-7B的显存占用范围是[5.6 GB, 8.4 GB]，DEML对于Llama-2-7B的显存占用范围是[4.81 GB, 6.67 GB], 可以看出DEML的显存占用范围更小。
+
+* Dynamic Pruning
+
+由于ELMS没有开源代码，所以无法进行内存占用以及性能的实验对比。但是我们通过对比观察裁剪相同比例下的MHA和MLP的困惑度差异，发现裁剪后的MHA的困惑度更低，MLP的困惑度更高。而ELMS采用就是对MLP进行裁剪，DEML采用的是对MHA进行裁剪，将会减少模型性能的损失。
+
+* Offloadingfootnote:[Chen, Shaoyuan, Yutong Lin, Mingxing Zhang, and Yongwei Wu. "Efficient and economic large language model inference with attention offloading." arXiv preprint arXiv:2405.01814 (2024).]footnote:[Song, Yixin, Zeyu Mi, Haotong Xie, and Haibo Chen. "Powerinfer: Fast large language model serving with a consumer-grade gpu." In Proceedings of the ACM SIGOPS 30th Symposium on Operating Systems Principles, pp. 590-606. 2024.]
+
+全部卸载到CPU和全部在GPU的推理延迟对比
+在Nvidia Quadro RTX 6000基于sequence length 512的ppl测试中，全部卸载到CPU的推理延迟是全部在GPU的推理延迟的20+倍。
+
+.Comparison of evaluation times
+|===
+|Device |TTFT       |TPOT   |PPL
+|Intel(R) Xeon(R) Gold 6230 CPU @2.10GHz|525.21ms|406.8ms| 3h36.88min
+|Nvidia Quadro RTX 6000    |24.18ms  |15.99ms|135442.82ms
+|===
+
+== Observations
+* 裁剪MHA比MLP的困惑度更低，性能损失更小
+
+.Comparison of the Perplexity of Pruning MHA and MLP
+image::Figure/ppl-mlp-mha.png[ppl-mlp-mha]
+
+所以DEML对MHA进行弹性层级的切分，尽可能减少模型性能的损失。
+
+* 内存倒叙重排序高命中加快IO传输
+
+比较common的观察就是内存重排序之后的权重访问速度明显提升，但是我们实验观察到从CPU到GPU的如果张量的内存分布前半部分，将带来更快的传输速度，能够进一步减少推理延迟。
+.Comparison of the Performance of Memory Reordering and Offset Access
+image::Figure/mem-reorder-offset.png[mem-reorder-offset]
+
+* 增量渐进式LoRA微调保证精度的同时大大减少训练成本
+
+我们使用一个alpaca-demo数据集对Llama-2-7B-hf全量模型进行了LoRA微调，记录微调时间以及训练后模型的困惑度。
+然后先对Llama-2-7B-hf注意力层的前一半参数LoRA微调，基于前一半训练完成的LoRA继续进行后一半参数的微调，记录微调时间以及训练后模型的困惑度。
+.Comparison of the Performance of LoRA Fine-tuning
+image::Figure/alpaca-demo.png[alpaca-demo]
+
+== Challenges
+
+* 如何优雅的进行模型的切分和传输
+* 如何保证模型的精度和训练成本
+* 如何动态识别当前环境中的资源调整模型规模
+
+== Design
+
+* 模型切分
+
+首先我们需要对模型进行切分，结合我们的观察一以及现有的GQA技术，我们将模型的MHA切分为多个层级，每个层级的权重数量大小是固定的，但是层级的数量是动态的，最小的粒度是注意力头的维度。
+
+* 模型传输
+
+其次我们需要对模型进行传输，将模型从CPU传输到GPU上参与推理，但是模型的传输需要考虑到模型的大小和设备的显存大小。
+
+* 弹性微调
+
+* 资源调度
+
+== Experiments
+
+=== Setup
+* Hardware
+** Nvidia Geforce RTX 3090
+** Nvidia Geforce RTX 4090
+** Nvidia Jetson AGX Orin 64 GB
+
+* Software
+** Llama-2-7B
+** DeepSeek
+** Qwen-7B
+
+* Dataset
+** Alpaca-en
+** Wikitext-2
+
+* Evaluation
+** Perplexity
+** Latency
+** Memory Usage
+
+=== Results
+* Memory Analysis
+* Performance Analysis
+* Accuracy Analysis
+* Resource Scheduling
+
+== Conclusion
+
+This is a paragraph with a *bold* word and an _italicized_ word.
+
+.Image caption
+image::image-file-name.png[I am the image alt text.]
+
+This is another paragraph.footnote:[I am footnote text and will be displayed at the bottom of the article.]
+
+=== Existing Work
+
+.Unordered list title
+* list item 1
+** nested list item
+*** nested nested list item 1
+*** nested nested list item 2
+* list item 2
+
+This is a paragraph.
+
+.Example block title
+====
+Content in an example block is subject to normal substitutions.
+====
+
+.Sidebar title
+****
+Sidebars contain aside text and are subject to normal substitutions.
+****
+
+==== Third level heading
+
+[#id-for-listing-block]
+.Listing block title
+----
+Content in a listing block is subject to verbatim substitutions.
+Listing block content is commonly used to preserve code input.
+----
+
+===== Fourth level heading
+
+.Table title
+|===
+|Column heading 1 |Column heading 2
+
+|Column 1, row 1
+|Column 2, row 1
+
+|Column 1, row 2
+|Column 2, row 2
+|===
+
+====== Fifth level heading
+
+[quote,firstname lastname,movie title]
+____
+I am a block quote or a prose excerpt.
+I am subject to normal substitutions.
+____
+
+[verse,firstname lastname,poem title and more]
+____
+I am a verse block.
+  Indents and endlines are preserved in verse blocks.
+____
+
+== First level heading
+
+TIP: There are five admonition labels: Tip, Note, Important, Caution and Warning.
+
+// I am a comment and won't be rendered.
+
+. ordered list item
+.. nested ordered list item
+. ordered list item
+
+The text at the end of this sentence is cross referenced to <<_third_level_heading,the third level heading>>
+
+== First level heading
+
+This is a link to the https://docs.asciidoctor.org/home/[Asciidoctor documentation].
+This is an attribute reference {url-quickref}[that links this text to the AsciiDoc Syntax Quick Reference].
