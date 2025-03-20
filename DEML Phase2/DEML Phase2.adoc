@@ -4,15 +4,21 @@ Xihao Sun <sunxh2016@lzu.edu.cn>
 :icons: font
 :url-quickref: https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
 
-第一阶段基本是在仿照ELMS的问题设定进行设计和实验，既缺少自己对问题设定的思考，又缺少问题场景数据的支撑，导致没有实际的创新点。 第二阶段要脱离ELMS的问题设定，针对弹性模型进行深入的探究，结合设计详细阐述问题场景。弹性模型，本质是对模型进行削减，实现效果就是资源和延迟的减少，如果按照精度至上的道路走就是在背道而驰。
+第一阶段基本是在仿照ELMS的问题设定进行设计和实验，既缺少自己对问题设定的思考，又缺少问题场景数据的支撑，导致没有实际的创新点。 第二阶段要脱离ELMS的问题设定，针对弹性模型进行深入的探究，结合设计详细阐述问题场景。弹性模型，本质是对模型进行削减，实现效果就是资源和延迟的减少，如果按照精度至上的道路走就是在背道而驰。所以我们应该重点强调模型的动态性，一是资源需求是动态变化的，需要根据资源的变化进行自适应的调整；二是模型的推理延迟也是动态变化的，需要根据延迟的变化进行自适应的调整。
 
-== Motivation
-**LLM on-device**凭借**data localization**的特性展现的**low-latency**和**data security**footnote:[Xu, Jiajun, Zhiyuan Li, Wei Chen, Qun Wang, Xin Gao, Qi Cai, and Ziyuan Ling. "On-device language models: A comprehensive review." arXiv preprint arXiv:2409.00088 (2024).]，正在获得日益增长的关注度。为适配丰富的下游任务，采用单模型多lora（Single Model & Multi-LoRA）是最优的解决范式。然而，设备上紧张的资源限制了模型的部署，尽管最近已经有很多努力去减少设备上的模型部署开销，但是资源需求是动态变化的，现有的设备上模型部署框架无法针对资源的变化进行自适应的调整。
+== Background
+**LLM on-device**凭借**data localization**的特性展现的**low-latency**和**data security**footnote:[Xu, Jiajun, Zhiyuan Li, Wei Chen, Qun Wang, Xin Gao, Qi Cai, and Ziyuan Ling. "On-device language models: A comprehensive review." arXiv preprint arXiv:2409.00088 (2024).]，关注度正在日益增长。
 
-8bit量化 7B模型，显存占用 大约在7G 左右，假设在一个12G的GPU上其他任务超过5G的显存占用，现有工作一般会显示模型加载失败或者OOM，无法执行推理工作。
+然而，设备上紧张的资源以及用户对于推理延迟的敏感性限制了模型的部署，尽管最近已经有很多努力去减少设备上的模型部署开销和推理延迟，但是资源需求是动态变化的，现有的设备上模型部署框架无法针对资源的变化进行自适应的调整。
+
+场景一举例说明：
+8bit量化 7B模型，显存占用 大约在7G 左右，在一个12G的GPU上可以完成推理工作。但是当其他应用占用超过5G或者在模型加载完成时，剩余显存全被其他应用占用，现有的推理框架一般会显示模型加载失败或者OOM，无法执行推理工作。
 
 GPU对应的显存大小：
 https://en.wikipedia.org/wiki/List_of_Nvidia_graphics_processing_units
+
+场景二举例说明：
+一个代码续写的应用中，随着代码量的不断增加，模型输入上下文张度不断增加，模型的推理延迟也会不断增加，当用户的代码量超过了模型的最大输入长度时，模型的推理延迟会急剧增加，用户的体验会受到影响。
 
 == Related Works
 On-Cloud

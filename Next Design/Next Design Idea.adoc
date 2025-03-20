@@ -1,0 +1,16 @@
+== Settings
+- 推理延迟优化，减少TPOT
+
+随着输出长度的增加，KV Cache随之增加。每次解码计算访问的KV增加，IO访问时间增加，导致TPOT增加，也就意味着模型推理越来越慢。用户体验越来越差。
+
+修改KV Cache的数量和访问模式进行优化，减少IO访问时间，从而提高模型推理速度。
+
+* 算法：减少 KV Cache 大小
+
+** MQA/GQA：通过共享 K 和 V 矩阵来减少显存占用。Multi-Query Attention（MQA）中所有头共享一套 K 和 V，Grouped-Query Attention（GQA）则将查询头分组，每组共享一套 K 和 V。
+** 滑动窗口约束：限制 Attention 的上下文范围，减小 KV Cache 的大小。例如，Longformer 和 LM-Infinite 等模型采用了滑动窗口技术
+
+* 系统：减少 KV Cache 访问次数
+** PageAttention：受操作系统虚拟内存和分页技术的启发，将 KV Cache 划分为固定大小的块进行存储，并在多个序列之间共享这些块，从而降低显存占用。
+** FlashAttention：采用分块策略，将频繁访问的 KV Cache 部分保留在快速 SRAM 中，同时系统地获取和淘汰数据块，以减少冗余内存操作。
+** Bifurcated Attention：将注意力计算分裂为两个不同的 GEMM 操作，优化 KV Cache 访问模式，减少内存 I/O 操作。
