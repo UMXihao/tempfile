@@ -41,9 +41,13 @@ def plot_bar():
 
 def plot_line():
 
-    x = np.array([1, 2, 3, 4, 5])
-    model1 = np.array([0.2160, 0.1925, 0.1854, 0.1513, 0.1132])
-    Ours = np.array([0.2416, 0.2331, 0.2165, 0.1943, 0.1715])
+    # x = np.array([1, 2, 3, 4, 5])
+    # model1 = np.array([0.2160, 0.1925, 0.1854, 0.1513, 0.1132])
+    # Ours = np.array([0.2416, 0.2331, 0.2165, 0.1943, 0.1715])
+
+    x = np.array([64, 128, 256, 512, 1024])
+    model1 = np.array([0.35, 1.12, 3.98, 15.23, 60.75])
+    Ours = np.array([0.12, 0.23, 0.45, 0.91, 1.82])
 
     # label在图示(legend)中显示。若为数学公式,则最好在字符串前后添加"$"符号
     # color：b:blue、g:green、r:red、c:cyan、m:magenta、y:yellow、k:black、w:white、、、
@@ -51,7 +55,7 @@ def plot_line():
     # marker：.  ,   o   v    <    *    +    1
     plt.figure(figsize=(5, 4))
     # linestyle = "-"
-    plt.grid(linestyle="-.")  # 设置背景网格线为虚线
+    # plt.grid(linestyle="-.")  # 设置背景网格线为虚线
     ax = plt.gca()
     # ax.spines['top'].set_visible(False)  # 去掉上边框
     # ax.spines['right'].set_visible(False)  # 去掉右边框
@@ -59,21 +63,22 @@ def plot_line():
     linewidth = 2.0
     markersize = 7
 
-    plt.plot(x, model1, marker='s', markersize=markersize, color="blue", label="Model1", linewidth=linewidth)
-    plt.plot(x, Ours, marker='X', markersize=markersize, color="tomato", label="Ours", linewidth=linewidth)
+    plt.plot(x, model1, marker='s', markersize=markersize, color="blue", label="MHA", linewidth=linewidth)
+    plt.plot(x, Ours, marker='X', markersize=markersize, color="tomato", label="MLP", linewidth=linewidth)
 
 
-    group_labels = ['-', '20%', '40%', '60%', '80%']
+    # group_labels = ['-', '20%', '40%', '60%', '80%']
+    group_labels = ['64', '128', '256', '512', '1024']
     plt.xticks(x, group_labels, fontsize=15)  # 默认字体大小为10
-    y_ticks = [0.10, 0.15, 0.20, 0.25, 0.30]
-    y_lables = ['0.10', '0.15', '0.20', '0.25', '0.30']
-    plt.yticks(np.array(y_ticks), y_lables, fontsize=15)
+    # y_ticks = [0.10, 0.15, 0.20, 0.25, 0.30]
+    # y_lables = ['0.10', '0.15', '0.20', '0.25', '0.30']
+    # plt.yticks(np.array(y_ticks), y_lables, fontsize=15)
     # plt.title("example", fontsize=12, fontweight='bold')  # 默认字体大小为12
     # plt.text(1, label_position, dataset,fontsize=25, fontweight='bold')
     # plt.xlabel("Edge Miss Rate", fontsize=15)
-    plt.ylabel(f"HR@20", fontsize=15)
-    plt.xlim(0.5, 5.5)  # 设置x轴的范围
-    plt.ylim(0.08, 0.30)
+    plt.ylabel(f"Latency (ms)", fontsize=15)
+    # plt.xlim(0.5, 5.5)  # 设置x轴的范围
+    # plt.ylim(0.08, 0.30)
 
     # plt.legend()
     # 显示各曲线的图例 loc=3 lower left
@@ -139,34 +144,40 @@ def plot_multi_bar():
     # 建议保存为svg格式,再用inkscape转为矢量图emf后插入word中
 
 def plot_bar_and_line():
+    lx = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]  # 模型规模（单位：B）
+    result1 = [75038.1406, 4342.6079, 73.737, 10.0562, 6.4624, 5.6659, 5.3622, 5.2203, 5.1343, 5.0523]  # 模型精度（与模型规模相关）
+    result2 = [1.147831623, 0.918822254, 0.503805096, 0.392943239, 0.389868374, 0.360693465, 0.353197028, 0.341084511, 0.318233539, 0.295382568]  # 模型精度（与 Prompt 长度相关）
     fontsize=20
-    result1 = [0.1967, 0.2103, 0.2398, 0.2446, 0.2387]
+    # result1 = [0.1967, 0.2103, 0.2398, 0.2446, 0.2387]
     l = [i for i in range(5)]
 
-    lx = ['2', '3', '4', '5', '6']
+    # lx = ['2', '3', '4', '5', '6']
 
     fig = plt.figure()
     ax1 = fig.add_subplot(111)
-    plt.bar(l, result1, alpha=0.3, color='blue', label='HR@20')
+
+    linewidth = 2.0
+    markersize = 7
+    plt.plot(l, result1, marker='s', markersize=markersize, color="blue", label="Uncertainty", linewidth=linewidth)
 
     # left_axis.set_ylim(0.80, 0.96)
     # left_axis.set_yticks(np.arange(0.80, 0.97, 0.04))
-    ax1.set_ylim([0.18, 0.26])
-    ax1.set_yticks(np.arange(0.18, 0.26, 0.015))
+    # ax1.set_ylim([0.18, 0.26])
+    # ax1.set_yticks(np.arange(0.18, 0.26, 0.015))
     # ax1.set_ylabel('AUC', fontsize=fontsize)
     plt.legend(loc="upper left", prop={'size': 15})
     plt.xticks(l, lx, fontsize=fontsize)
     plt.yticks(fontsize=fontsize)
 
-    result2 = [0.0823, 0.0976, 0.1054, 0.1185, 0.1045]
+    # result2 = [0.0823, 0.0976, 0.1054, 0.1185, 0.1045]
 
     ax2 = ax1.twinx()  # this is the important function
-    ax2.plot(l, result2, 'or-', label='NDCG@20', color='green')
+    ax2.plot(l, result2, marker='X', markersize=markersize, color="tomato", label="Perplexity", linewidth=linewidth)
     ax2.legend(loc=2)
     ax2.set_ylim([0.07, 0.13])
     ax2.set_yticks(np.arange(0.07, 0.13, 0.01))
     # ax2.set_ylabel('Log-loss', fontsize=fontsize)
-    plt.text(1.5, 0.06, "Num", fontsize=20)
+    plt.text(1.5, 0.06, "Model Size", fontsize=20)
     plt.legend(loc="upper right", prop={'size': 15})
     plt.yticks(fontsize=fontsize)
     plt.tight_layout()
@@ -388,23 +399,25 @@ import matplotlib.patches as mpatches
 # 上下对齐的两个子图
 def plot_two_bar_in_one():
 
-    beauty_base = [0.14, 0.16, 0.23, 0.25, 0.27, 0.30, 0.33, 0.34]
-    beauty_grow = [0.15, 0.17, 0.24, 0.26, 0.28, 0.31, 0.34, 0.35]
-    toys_base = [0.14, 0.16, 0.23, 0.25, 0.27, 0.30, 0.33, 0.34]
-    toys_grow = [0.15, 0.17, 0.24, 0.26, 0.28, 0.31, 0.34, 0.35]
+    beauty_base = [34.08, 120.34, 281.4, 497.9, 938.78]
+    beauty_grow = [56.35, 177.7, 349.5, 748.86, 1563.5]
+    beauty_power = [56.35, 177.7, 349.5, 748.86, 1563.5]
+    # beauty_power = [3421.21, 13659.82, 27889.26, 57946.38, 108420.23]
+    toys_base = [22.07, 22.09, 22.37, 22.93, 24.06]
+    toys_grow = [27.28, 27.82, 28.85, 30.61, 32.89]
+    toys_power = [120.85, 123.05, 124.66, 157.46, 157.85]
 
     # plt.xlabel("Extend", fontsize=20, fontweight='bold')
     # plt.ylabel("NDCG@10", fontsize=25)
     # plt.text(0.1, 0.55, data_name, fontsize=20, fontweight='bold')
 
-    x = np.arange(8)
-    total_width, n = 0.8, 2
+    x = np.arange(5)
+    total_width, n = 0.8, 3
     width = total_width / n
     x = x - (total_width - width) / n
 
 
-    lables = ['Model1', 'Model2', 'Model3', 'Model4',
-              'Model5', 'Model6', 'Model7', 'Model8']
+    lables = [100, 500, 1000, 2000, 4000]
 
     # plt.rcParams['font.sans-serif'] = ['Times New Roman']  # 如果要显示中文字体,则在此处设为：SimHei
     # plt.rcParams['axes.unicode_minus'] = False  # 显示负号
@@ -415,49 +428,55 @@ def plot_two_bar_in_one():
 
     beauty_base = np.array(beauty_base)
     beauty_grow = np.array(beauty_grow)
+    beauty_power = np.array(beauty_power)
 
-    low = 0.13
-    up = 0.41
+    low = 0
+    up = 1600
     ax1.set_ylim(low, up)
     ax1.bar(x, beauty_base, width=width, color='royalblue', hatch=".", edgecolor='w')  # , edgecolor='k',)
     ax1.bar(x + width, beauty_grow, width=width, color='tomato', hatch="/", edgecolor='w')  # , edgecolor='k',)
+    ax1.bar(x + 2*width, beauty_power, width=width, color='gold', hatch="\\", edgecolor='w')  # , edgecolor='k',)
+
     position = (up - low) * 0.9 + low
-    ax1.text(2.6, position, 'Beauty', fontsize=40)
-    y_ticks = [0.15, 0.20, 0.25, 0.30, 0.35, 0.40]
-    y_lables = ['0.15', '0.20', '0.25', '0.30', '0.35', '0.40']
+    ax1.text(2.6, position, 'TTFT', fontsize=40)
+    y_ticks = [0, 200, 400, 600, 800, 1000, 1200, 1400, 1600]
+    y_lables = ['0', '200', '400', '600', '800', '1000', '1200', '1400', '1600']
     ax1.set_yticks(np.array(y_ticks))
 
     ax1.set_yticklabels(y_lables, fontsize=40)
 
     toys_base = np.array(toys_base)
     toys_grow = np.array(toys_grow)
-    low = 0.11
-    up = 0.41
+    toys_power = np.array(toys_power)
+    low = 0
+    up = 160
     ax2.set_ylim(low, up)
     ax2.bar(x, toys_base, width=width, color='royalblue', hatch=".", edgecolor='w')
-
     ax2.bar(x + width, toys_grow, width=width, color='tomato', hatch="/", edgecolor='w')
+    ax2.bar(x + 2*width, toys_power, width=width, color='gold', hatch="/", edgecolor='w')
+
     position = (up - low) * 0.9 + low
-    ax2.text(2.7, position, 'Toys', fontsize=40)
+    ax2.text(2.7, position, 'TPOT', fontsize=40)
     ax2.set_xticks(x + (width / 2))
     ax2.set_xticklabels(lables, fontsize=40, rotation=20)
 
-    y_ticks = [0.15, 0.20, 0.25, 0.30, 0.35, 0.40]
-    y_lables = ['0.15', '0.20', '0.25', '0.30', '0.35', '0.40']
+    y_ticks = [0, 20, 40, 60, 80, 100, 120, 140, 160]
+    y_lables = ['0', '20', '40', '60', '80', '100', '120', '140', '160']
     ax2.set_yticks(np.array(y_ticks))
 
     ax2.set_yticklabels(y_lables, fontsize=40)
 
     leg1 = mpatches.Patch(color='royalblue', hatch='.')
     leg2 = mpatches.Patch(color='tomato', hatch='/')
+    leg3 = mpatches.Patch(color='gold', hatch='/')
 
-    labels = ['Original', 'Final']
-    fig.legend(handles=[leg1, leg2], labels=labels, loc='upper center', bbox_to_anchor=(0.2, 1), ncol=1, prop={'size': 40})
+    labels = ['Ours', 'llama.cpp', 'PowerInfer']
+    fig.legend(handles=[leg1, leg2, leg3], labels=labels, loc='upper center', bbox_to_anchor=(0.2, 1), ncol=1, prop={'size': 40})
 
     fig.tight_layout()
     fig.show()
     # 建议保存为svg格式,再用inkscape转为矢量图emf后插入word中
-    fig.savefig('./pics/two_bars.png', format='png')
+    fig.savefig('./pics/exp-comparison.png', format='png')
 
 
 def plot_twice(x,y_1,y_2,save_name,loc,x_label):
@@ -659,15 +678,62 @@ y_1_d = [[0.0705, 0.0738, 0.0765, 0.0775, 0.0794], [0.1171, 0.1260, 0.1289, 0.13
 y_2_d = [[0.0347, 0.0359, 0.0380, 0.0382, 0.0393], [0.0614, 0.0648, 0.0669, 0.0672, 0.0663],
          [0.0666, 0.0695, 0.0716, 0.0735, 0.0736], [0.2297, 0.2207, 0.2124, 0.1920, 0.1802]]
 
+def plot_multi_bar_cus():
+    x = np.array([64, 128, 256, 512, 1024])
+    model1 = np.array([0.35, 1.12, 3.98, 15.23, 60.75])
+    Ours = np.array([0.12, 0.23, 0.45, 0.91, 1.82])
+
+    # label在图示(legend)中显示。若为数学公式,则最好在字符串前后添加"$"符号
+    # color：b:blue、g:green、r:red、c:cyan、m:magenta、y:yellow、k:black、w:white、、、
+    # 线型：-  --   -.  :    ,
+    # marker：.  ,   o   v    <    *    +    1
+    plt.figure(figsize=(7, 4))
+    # linestyle = "-"
+    x = np.arange(5)
+    # n 为有几个柱子
+    total_width, n = 0.8, 2
+    width = total_width / n
+    x = x - (total_width - width) / n
+
+
+    # low = 0.05
+    # up = 0.44
+    low = 0
+    up = 60
+    plt.ylim(low, up)
+    # plt.xlabel("Amount of Data", fontsize=15)
+    plt.ylabel(f"Latency (ms)", fontsize=20)
+    labels = ['MHA', 'MLP']
+
+    # 'tomato', 'blue', 'orange', 'green', 'purple', 'deepskyblue'
+    plt.bar(x, model1, width=width, color='blue', edgecolor='w')  # , edgecolor='k',)
+    plt.bar(x + width, Ours, width=width, color='green', edgecolor='w')  # , edgecolor='k',)
+
+    plt.xticks(x +1.5*width, labels=['64', '128', '256', '512', '1024'], fontsize=20)
+
+    y_lables = ['0', '10', '20', '30', '40', '50', '60']
+    y_ticks = [float(i) for i in y_lables]
+    # plt.yscale('linear')
+    # y_ticks = [0.25, 0.30, 0.35, 0.40, 0.45]
+    # y_lables = ['0.25', '0.30', '0.35', '0.40', '0.45']
+    plt.yticks(np.array(y_ticks), y_lables, fontsize=20)#bbox_to_anchor=(0.30, 1)
+    plt.legend(labels=labels, ncol=2,
+               prop={'size': 14})
+
+    plt.tight_layout()
+    plt.savefig('./pics/latency-mlp-mha.png', format='png')
+    plt.show()
+    # 建议保存为svg格式,再用inkscape转为矢量图emf后插入word中
+
 if __name__ == '__main__':
     # plot_bar()
-    # plot_line()
-    # plot_multi_bar()
+    plot_line()
+    # plot_multi_bar_cus()
     # plot_bar_and_line()
     # plot_scatters()
     # plot_hetmap()
     # plot_ablation_bar_in_one()
-    plot_two_bar_in_one()
+    # plot_two_bar_in_one()
     # plot_twice(dropout_r, y_1_d, y_2_d, "dropout_t", "best", "dropout rate ")
     # plot_box("plot_box")
     # plot_violin("plot_violin")
