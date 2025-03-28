@@ -119,8 +119,30 @@ def human_token_length():
 
 # human_token_length()
 
+def mbpp_token_length():
+    dataset = load_dataset('mbpp', split='test')
+
+    token_length = []
+    prompt = []
+    for i in tqdm(range(len(dataset))):
+        token_length.append(calculate_prompt_token_length(dataset[i]["text"]))
+        prompt.append(dataset[i]["text"])
+
+    data = {
+        'ID': token_length,
+        'prompt': prompt
+    }
+    df = pd.DataFrame(data)
+    # 查看数据的前几行
+    print("start to write file...")
+    # 将数据写入Excel文件
+    output_file = 'mbpp.xlsx'
+    df.to_excel(output_file, index=False, engine='openpyxl')
+
+mbpp_token_length()
+
 # arc_c = load_dataset('allenai/ai2_arc', 'ARC-Challenge', split='train')
-arc_e = load_dataset('allenai/ai2_arc', 'ARC-Easy', split='train')
+# arc_e = load_dataset('allenai/ai2_arc', 'ARC-Easy', split='train')
 def arc_token_length(dataset, name):
     token_length = []
     prompt = []
@@ -140,7 +162,7 @@ def arc_token_length(dataset, name):
     df.to_excel(output_file, index=False, engine='openpyxl')
 
 # arc_token_length(arc_c, 'arc-c')
-arc_token_length(arc_e, 'arc-e')
+# arc_token_length(arc_e, 'arc-e')
 
 def trivia_qa_token_length():
     dataset = load_dataset('mandarjoshi/trivia_qa', 'rc.wikipedia')

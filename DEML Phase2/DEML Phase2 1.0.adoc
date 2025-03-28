@@ -5,15 +5,18 @@ Xihao Sun <sunxh2016@lzu.edu.cn>
 :url-quickref: https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
 
 == Problem Statement
+
+我们收集并统计了三类应用当前最常使用的模型的大小，以及每类应用常用的基准测试的数据集。
+我们发现，对于不同的应用，使用的模型大小也不同，对应的推理延迟和性能也不同。因此我们需要一种通用的模型，能够适应不同的应用，保证模型的延迟和性能诉求。
+
 .Common Model Sizes Used for Different Applications
 |===
 |Application|Model Size|Models
 |Chatbotfootnote:[https://lmsys.org/blog/2023-05-25-leaderboard/]|3B-7B|	Orac-mini-3Bfootnote:[Orca: Progressive Learning from Complex
-Explanation Traces of GPT-4]/FastChat-T5-3B/Vicuna-7B/MPT-7Bfootnote:[https://lmsys.org/blog/2023-05-25-leaderboard/]/Llama2-7Bfootnote:[Llama 2: Open Foundation and Fine-Tuned Chat Models]
+Explanation Traces of GPT-4]/FastChat-T5-3B/Vicuna-7B/MPT-7Bfootnote:[https://lmsys.org/blog/2023-05-25-leaderboard/]/Llama2-7Bfootnote:[Llama 2: Open Foundation and Fine-Tuned Chat Models]/Falcon-7B
 // |Translationfootnote:[Reseh Development of Machine translation and Large Language Model]footnote:[BayLing: Bridging Cross-lingual Alignment and Instruction Following through Interactive Translation for Large Language Models]|6B-13B|ChatGLM-6B/Alpaca-7B/Vicuna-13B
-|Code Generationfootnote:[https://zhuanlan.zhihu.com/p/651439303]footnote:[Large Language Models Meet NL2Code: A Survey]|13B-16B|CodeLlama-13Bfootnote:[1]/CodeT5P-16Bfootnote:[CodeT5+: Open Code Large Language Models for Code Understanding and Generation]/OctoCoder-16Bfootnote:[OctoPack: Instruction Tuning Code Large Language Models
-|High-quality Document Summarizationfootnote:[A Systematic Survey of Text Summarization: From Statistical Methods to Large Language Models]|>30B|Llama2-70Bfootnote:[Cross-lingual Multi-document Summarization Based on
-Chain-of-Thought]/GPT-4/PT-4footnote:[A Systematic Survey of Text Summarization: From Statistical Methods to Large Language Models]
+|Code Generationfootnote:[https://zhuanlan.zhihu.com/p/651439303]footnote:[Large Language Models Meet NL2Code: A Survey]|13B-16B|CodeLlama-13Bfootnote:[1]/CodeT5P-16Bfootnote:[CodeT5+: Open Code Large Language Models for Code Understanding and Generation]/OctoCoder-16Bfootnote:[OctoPack: Instruction Tuning Code Large Language Models]
+|High-quality Document Summarizationfootnote:[A Systematic Survey of Text Summarization: From Statistical Methods to Large Language Models]|>30B|Llama2-70Bfootnote:[Cross-lingual Multi-document Summarization Based on Chain-of-Thought]/GPT-4/PT-4footnote:[A Systematic Survey of Text Summarization: From Statistical Methods to Large Language Models]
 |===
 
 * QA：SQuAD, ARC easy and challenge (Clark et al., 2018)
