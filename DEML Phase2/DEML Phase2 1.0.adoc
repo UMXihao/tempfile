@@ -19,17 +19,19 @@ Explanation Traces of GPT-4]/FastChat-T5-3B/Vicuna-7B/MPT-7Bfootnote:[https://lm
 |High-quality Document Summarizationfootnote:[A Systematic Survey of Text Summarization: From Statistical Methods to Large Language Models]|>30B|Llama2-70Bfootnote:[Cross-lingual Multi-document Summarization Based on Chain-of-Thought]/GPT-4/PT-4footnote:[A Systematic Survey of Text Summarization: From Statistical Methods to Large Language Models]
 |===
 
-* QA：SQuAD, ARC easy and challenge (Clark et al., 2018)
+* QA：SQuADfootnote:[Squad: 100,000+ questions for machine comprehension of text], ARC easy and challenge (Clark et al., 2018)footnote:[Think you have solved question answering? try arc, the ai2 reasoning challenge]
 // SQuAD prompt mean length: 13
 // ARC-e prompt mean length: 23
 // ARC-c prompt mean length: 26
 
 // * Translation： Workshop on Machine Translation()
 
-* Code. We report the average pass@1 scores of our models on HumanEval (Chen et al., 2021) and MBPP (Austin et al., 2021).
+* Code. We report the average pass@1 scores of our models on HumanEval (Chen et al., 2021)footnote:[Evaluating large
+language models trained on code] and MBPP (Austin et al., 2021)footnote:[Program synthesis with large language
+models].
 // HumanEval prompt mean length: 132
 
-* Commonsense Reasoning.
+* Commonsense Reasoning. TrivialQAfootnote:[TriviaQA: A Large Scale Distantly Supervised Challenge Dataset for Reading Comprehension]
 
 .Performance and Latency Comparison of Different Models
 |===
