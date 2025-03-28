@@ -1,0 +1,103 @@
+= Dynamic Elastic Multi-LoRA Model on-device Inference
+Xihao Sun <sunxh2016@lzu.edu.cn>
+:toc:
+:icons: font
+:url-quickref: https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
+
+== Problem Statement
+.Common Model Sizes Used for Different Applications
+|===
+|Application|Model Size|Models
+|Chatbotfootnote:[https://lmsys.org/blog/2023-05-25-leaderboard/]|3B-7B|	Orac-mini-3Bfootnote:[Orca: Progressive Learning from Complex
+Explanation Traces of GPT-4]/FastChat-T5-3B/Vicuna-7B/MPT-7Bfootnote:[https://lmsys.org/blog/2023-05-25-leaderboard/]/Llama2-7Bfootnote:[Llama 2: Open Foundation and Fine-Tuned Chat Models]
+// |Translationfootnote:[Reseh Development of Machine translation and Large Language Model]footnote:[BayLing: Bridging Cross-lingual Alignment and Instruction Following through Interactive Translation for Large Language Models]|6B-13B|ChatGLM-6B/Alpaca-7B/Vicuna-13B
+|Code Generationfootnote:[https://zhuanlan.zhihu.com/p/651439303]footnote:[Large Language Models Meet NL2Code: A Survey]|13B-16B|CodeLlama-13Bfootnote:[1]/CodeT5P-16Bfootnote:[CodeT5+: Open Code Large Language Models for Code Understanding and Generation]/OctoCoder-16Bfootnote:[OctoPack: Instruction Tuning Code Large Language Models
+|High-quality Document Summarizationfootnote:[A Systematic Survey of Text Summarization: From Statistical Methods to Large Language Models]|>30B|Llama2-70Bfootnote:[Cross-lingual Multi-document Summarization Based on
+Chain-of-Thought]/GPT-4/PT-4footnote:[A Systematic Survey of Text Summarization: From Statistical Methods to Large Language Models]
+|===
+
+* QA：SQuAD, ARC easy and challenge (Clark et al., 2018)
+// SQuAD prompt mean length: 13
+// ARC-e prompt mean length: 23
+// ARC-c prompt mean length: 26
+
+// * Translation： Workshop on Machine Translation()
+
+* Code. We report the average pass@1 scores of our models on HumanEval (Chen et al., 2021) and MBPP (Austin et al., 2021).
+// HumanEval prompt mean length: 132
+
+* Commonsense Reasoning.
+
+.Performance and Latency Comparison of Different Models
+|===
+|Model|SQuAD 0-shot|TTFT|TPOT|WMT|TTFT|TPOT|Human-Eval pass@1|TTFT|TPOT|ARC-e|TTFT|TPOT|ARC-c|TTFT|TPOT
+// |Orac-mini-3B|||||||||||||41.55||
+// |FastChat-T5-3B|||||||||||||||
+// |Vicuna-7B|||||||||||||||
+|MPT-7B| 59.5||||||18.3|||70.2|||42.6||
+|Llama-2-7B|67.2|56.41|25.24||||12.8|||75.2|||45.9||
+|Llama-2-13B|72.9||||||18.3|||77.3|||49.4||
+// |Vicuna-13B|||||||||||||||
+|Llama-2-70B|80.7||||||29.9|||80.2|||57.4||
+|===
+
+== Existing Works
+// 切换延迟
+* Multi-Task-Multi-Models
+* Multi-LoRA-Single-Model
+// 不同稀疏性的剪枝
+// 推理延迟TTFT
+// 推理精度ELMS
+* Multi-Task-Flexible-Model
+
+** 模型切换延迟对比
+
+.Comparison of Model Switching Latency
+image::Figure/switching-latency.png[switching-latency]
+
+// 除了精度，还要从别的方向喷ELMS
+
+// 如果模型装载不下，应该如何处理？
+
+// 多任务的kv cache 管理！
+
+== Observations
+
+== Challenges
+
+== Design
+* 切分剪枝
+* 切换
+* 多任务的kv cache 管理
+
+== Experiments
+
+=== Setup
+* Hardware
+** Nvidia Geforce RTX 3090
+** Nvidia Geforce RTX 4090
+** Nvidia Jetson AGX Orin 64 GB
+
+* Software
+** Llama-2-7B
+** DeepSeek
+** Qwen-7B
+
+* Dataset
+** Alpaca-en
+** Wikitext-2
+
+* Evaluation
+** Perplexity
+** Latency
+** Memory Usage
+
+=== Results
+* Memory Analysis
+* Performance Analysis
+* Accuracy Analysis
+* Resource Scheduling
+
+== Conclusion
+
+=== Existing Work

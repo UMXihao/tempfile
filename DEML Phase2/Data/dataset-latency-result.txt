@@ -1,0 +1,45 @@
+SQuaD
+============ Serving Benchmark Result ============
+Successful requests:                     25200
+Benchmark duration (s):                  25127.56
+Total input tokens:                      381374
+Total generated tokens:                  196018
+Request throughput (req/s):              1.00
+Output token throughput (tok/s):         7.80
+Total Token throughput (tok/s):          22.98
+---------------Time to First Token----------------
+Mean TTFT (ms):                          56.41
+Median TTFT (ms):                        56.35
+P99 TTFT (ms):                           79.62
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          25.24
+Median TPOT (ms):                        24.33
+P99 TPOT (ms):                           34.04
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           25.26
+Median ITL (ms):                         24.50
+P99 ITL (ms):                            42.85
+==================================================
+
+MPT-7B-Chat
+============ Serving Benchmark Result ============
+Successful requests:                     25200
+Benchmark duration (s):                  25127.06
+Total input tokens:                      312410
+Total generated tokens:                  186681
+Request throughput (req/s):              1.00
+Output token throughput (tok/s):         7.43
+Total Token throughput (tok/s):          19.86
+---------------Time to First Token----------------
+Mean TTFT (ms):                          56.33
+Median TTFT (ms):                        55.91
+P99 TTFT (ms):                           78.63
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          25.97
+Median TPOT (ms):                        25.14
+P99 TPOT (ms):                           35.39
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           25.97
+Median ITL (ms):                         25.03
+P99 ITL (ms):                            43.19
+==================================================
