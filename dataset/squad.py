@@ -139,7 +139,7 @@ def mbpp_token_length():
     output_file = 'mbpp.xlsx'
     df.to_excel(output_file, index=False, engine='openpyxl')
 
-mbpp_token_length()
+# mbpp_token_length()
 
 # arc_c = load_dataset('allenai/ai2_arc', 'ARC-Challenge', split='train')
 # arc_e = load_dataset('allenai/ai2_arc', 'ARC-Easy', split='train')
@@ -165,7 +165,7 @@ def arc_token_length(dataset, name):
 # arc_token_length(arc_e, 'arc-e')
 
 def trivia_qa_token_length():
-    dataset = load_dataset('mandarjoshi/trivia_qa', 'rc.wikipedia')
+    dataset = load_dataset('mandarjoshi/trivia_qa', 'rc')
     print(dataset)
 
-# trivia_qa_token_length()
+trivia_qa_token_length()
