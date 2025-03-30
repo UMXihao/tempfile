@@ -287,7 +287,10 @@ DatasetDict({
 '''
 
 def long_token_length():
-    dataset = load_dataset('L4NLP/LEval', 'review_summ', split='test')
+    # ['codeU', 'coursera', 'financial_qa', 'gov_report_summ', 'gsm100', 'legal_contract_qa', 'meeting_summ', 'multidoc_qa',
+    # 'narrative_qa', 'natural_question', 'news_summ', 'paper_assistant', 'patent_summ', 'quality', 'review_summ', 'sci_fi',
+    # 'scientific_qa', 'topic_retrieval_longchat', 'tpo', 'tv_show_summ']
+    dataset = load_dataset('L4NLP/LEval', 'tv_show_summ', split='test')
     # print(dataset)
     token_length = []
     prompt = []
@@ -303,6 +306,6 @@ def long_token_length():
     # 查看数据的前几行
     print("start to write file...")
     # 将数据写入Excel文件
-    output_file = 'LEval.xlsx'
+    output_file = 'LEval_tv_show_summ.xlsx'
     df.to_excel(output_file, index=False, engine='openpyxl')
 long_token_length()
