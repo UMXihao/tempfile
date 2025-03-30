@@ -4,7 +4,8 @@ import pandas as pd
 from tqdm import tqdm
 
 # 加载分词器
-tokenizer = AutoTokenizer.from_pretrained('/Users/sunxihao/Documents/code/llama.cpp/models/Llama-3.2-1B-Instruct')
+# tokenizer = AutoTokenizer.from_pretrained('/Users/sunxihao/Documents/code/llama.cpp/models/Llama-3.2-1B-Instruct')
+tokenizer = AutoTokenizer.from_pretrained('/home/yandong/Documents/um-data/models/Llama-2-7b-hf')
 
 # 计算每个prompt的token长度
 def calculate_prompt_token_length(prompt):
@@ -165,7 +166,143 @@ def arc_token_length(dataset, name):
 # arc_token_length(arc_e, 'arc-e')
 
 def trivia_qa_token_length():
-    dataset = load_dataset('mandarjoshi/trivia_qa', 'rc')
-    print(dataset)
+    token_length = []
+    prompt = []
+    # dataset_path = "/home/yandong/Documents/um-data/models/TriviaQA/unfiltered.nocontext"
+    dataset_path = "/home/yandong/Documents/um-data/models/TriviaQA/unfiltered"
 
-trivia_qa_token_length()
+    # dataset = load_dataset('mandarjoshi/trivia_qa', 'rc')
+    # dataset = load_dataset(dataset_path)
+    dataset = load_dataset(dataset_path, split='train', cache_dir='/home/yandong/Documents/um-data/models/')
+
+    # print(dataset)
+    for i in tqdm(range(len(dataset))):
+        token_length.append(calculate_prompt_token_length(dataset[i]["question"]))
+        prompt.append(dataset[i]["question"])
+
+    data = {
+        'ID': token_length,
+        'prompt': prompt
+    }
+    df = pd.DataFrame(data)
+    # 查看数据的前几行
+    print("start to write file...")
+    # 将数据写入Excel文件
+    output_file = 'trivialqa-unfiltered-train.xlsx'
+    df.to_excel(output_file, index=False, engine='openpyxl')
+
+# trivia_qa_token_length()
+
+'''
+# rc 
+DatasetDict({
+    train: Dataset({
+        features: ['question', 'question_id', 'question_source', 'entity_pages', 'search_results', 'answer'],
+        num_rows: 61888
+    })
+    validation: Dataset({
+        features: ['question', 'question_id', 'question_source', 'entity_pages', 'search_results', 'answer'],
+        num_rows: 7993
+    })
+    test: Dataset({
+        features: ['question', 'question_id', 'question_source', 'entity_pages', 'search_results', 'answer'],
+        num_rows: 7701
+    })
+})
+# rc-nocontext
+DatasetDict({
+    train: Dataset({
+        features: ['question', 'question_id', 'question_source', 'entity_pages', 'search_results', 'answer'],
+        num_rows: 138384
+    })
+    validation: Dataset({
+        features: ['question', 'question_id', 'question_source', 'entity_pages', 'search_results', 'answer'],
+        num_rows: 17944
+    })
+    test: Dataset({
+        features: ['question', 'question_id', 'question_source', 'entity_pages', 'search_results', 'answer'],
+        num_rows: 17210
+    })
+})
+# rc-web
+DatasetDict({
+    train: Dataset({
+        features: ['question', 'question_id', 'question_source', 'entity_pages', 'search_results', 'answer'],
+        num_rows: 76496
+    })
+    validation: Dataset({
+        features: ['question', 'question_id', 'question_source', 'entity_pages', 'search_results', 'answer'],
+        num_rows: 9951
+    })
+    test: Dataset({
+        features: ['question', 'question_id', 'question_source', 'entity_pages', 'search_results', 'answer'],
+        num_rows: 9509
+    })
+})
+# rc-web.nocontext
+DatasetDict({
+    train: Dataset({
+        features: ['question', 'question_id', 'question_source', 'entity_pages', 'search_results', 'answer'],
+        num_rows: 76496
+    })
+    validation: Dataset({
+        features: ['question', 'question_id', 'question_source', 'entity_pages', 'search_results', 'answer'],
+        num_rows: 9951
+    })
+    test: Dataset({
+        features: ['question', 'question_id', 'question_source', 'entity_pages', 'search_results', 'answer'],
+        num_rows: 9509
+    })
+})
+# rc.wikipedia
+DatasetDict({
+    train: Dataset({
+        features: ['question', 'question_id', 'question_source', 'entity_pages', 'search_results', 'answer'],
+        num_rows: 61888
+    })
+    validation: Dataset({
+        features: ['question', 'question_id', 'question_source', 'entity_pages', 'search_results', 'answer'],
+        num_rows: 7993
+    })
+    test: Dataset({
+        features: ['question', 'question_id', 'question_source', 'entity_pages', 'search_results', 'answer'],
+        num_rows: 7701
+    })
+})
+# rc.wikipedia.nocontext
+DatasetDict({
+    train: Dataset({
+        features: ['question', 'question_id', 'question_source', 'entity_pages', 'search_results', 'answer'],
+        num_rows: 61888
+    })
+    validation: Dataset({
+        features: ['question', 'question_id', 'question_source', 'entity_pages', 'search_results', 'answer'],
+        num_rows: 7993
+    })
+    test: Dataset({
+        features: ['question', 'question_id', 'question_source', 'entity_pages', 'search_results', 'answer'],
+        num_rows: 7701
+    })
+})
+'''
+
+def long_token_length():
+    dataset = load_dataset('L4NLP/LEval', 'review_summ', split='test')
+    # print(dataset)
+    token_length = []
+    prompt = []
+    for i in tqdm(range(len(dataset))):
+        token_length.append(calculate_prompt_token_length(dataset[i]["input"]))
+        prompt.append(dataset[i]["input"])
+
+    data = {
+        'ID': token_length,
+        'prompt': prompt
+    }
+    df = pd.DataFrame(data)
+    # 查看数据的前几行
+    print("start to write file...")
+    # 将数据写入Excel文件
+    output_file = 'LEval.xlsx'
+    df.to_excel(output_file, index=False, engine='openpyxl')
+long_token_length()
