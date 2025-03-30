@@ -32,6 +32,8 @@ models].
 // HumanEval prompt mean length: 132
 
 * Commonsense Reasoning. TrivialQAfootnote:[TriviaQA: A Large Scale Distantly Supervised Challenge Dataset for Reading Comprehension]
+// TrivialQA prompt mean length: 14
+// LEval prompt mean length:
 
 .Performance and Latency Comparison of Different Models
 |===
