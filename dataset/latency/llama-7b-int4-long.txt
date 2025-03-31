@@ -1,0 +1,59 @@
+llama_perf_sampler_print:    sampling time =       5.15 ms /  8021 runs   (    0.00 ms per token, 1557778.21 tokens per second)
+llama_perf_context_print:        load time =    6624.12 ms
+llama_perf_context_print: prompt eval time =    4584.73 ms /  7893 tokens (    0.58 ms per token,  1721.58 tokens per second)
+llama_perf_context_print:        eval time =    3406.46 ms /   127 runs   (   26.82 ms per token,    37.28 tokens per second)
+llama_perf_context_print:       total time =    8025.72 ms /  8020 tokens
+
+llama_perf_sampler_print:    sampling time =       6.75 ms /  8147 runs   (    0.00 ms per token, 1206962.96 tokens per second)
+llama_perf_context_print:        load time =    6628.43 ms
+llama_perf_context_print: prompt eval time =    4686.35 ms /  8019 tokens (    0.58 ms per token,  1711.14 tokens per second)
+llama_perf_context_print:        eval time =    3438.13 ms /   127 runs   (   27.07 ms per token,    36.94 tokens per second)
+llama_perf_context_print:       total time =    8160.60 ms /  8146 tokens
+
+llama_perf_sampler_print:    sampling time =       5.04 ms /  8126 runs   (    0.00 ms per token, 1611662.04 tokens per second)
+llama_perf_context_print:        load time =    6606.23 ms
+llama_perf_context_print: prompt eval time =    4650.36 ms /  7998 tokens (    0.58 ms per token,  1719.87 tokens per second)
+llama_perf_context_print:        eval time =    3209.27 ms /   127 runs   (   25.27 ms per token,    39.57 tokens per second)
+llama_perf_context_print:       total time =    7894.50 ms /  8125 tokens
+
+llama_perf_sampler_print:    sampling time =       5.07 ms /  8195 runs   (    0.00 ms per token, 1615414.94 tokens per second)
+llama_perf_context_print:        load time =    6613.52 ms
+llama_perf_context_print: prompt eval time =    4733.12 ms /  8067 tokens (    0.59 ms per token,  1704.37 tokens per second)
+llama_perf_context_print:        eval time =    3427.33 ms /   127 runs   (   26.99 ms per token,    37.06 tokens per second)
+llama_perf_context_print:       total time =    8195.66 ms /  8194 tokens
+
+llama_perf_sampler_print:    sampling time =       5.08 ms /  8242 runs   (    0.00 ms per token, 1621483.38 tokens per second)
+llama_perf_context_print:        load time =    6624.41 ms
+llama_perf_context_print: prompt eval time =    4788.61 ms /  8114 tokens (    0.59 ms per token,  1694.44 tokens per second)
+llama_perf_context_print:        eval time =    3461.40 ms /   127 runs   (   27.26 ms per token,    36.69 tokens per second)
+llama_perf_context_print:       total time =    8284.25 ms /  8241 tokens
+
+llama_perf_sampler_print:    sampling time =       5.07 ms /  8344 runs   (    0.00 ms per token, 1647058.82 tokens per second)
+llama_perf_context_print:        load time =    6655.36 ms
+llama_perf_context_print: prompt eval time =    4868.20 ms /  8216 tokens (    0.59 ms per token,  1687.69 tokens per second)
+llama_perf_context_print:        eval time =    3488.17 ms /   127 runs   (   27.47 ms per token,    36.41 tokens per second)
+llama_perf_context_print:       total time =    8390.56 ms /  8343 tokens
+
+llama_perf_sampler_print:    sampling time =       5.16 ms /  8344 runs   (    0.00 ms per token, 1616740.94 tokens per second)
+llama_perf_context_print:        load time =    6620.83 ms
+llama_perf_context_print: prompt eval time =    4865.36 ms /  8216 tokens (    0.59 ms per token,  1688.67 tokens per second)
+llama_perf_context_print:        eval time =    3479.71 ms /   127 runs   (   27.40 ms per token,    36.50 tokens per second)
+llama_perf_context_print:       total time =    8379.18 ms /  8343 tokens
+
+llama_perf_sampler_print:    sampling time =       5.07 ms /  8231 runs   (    0.00 ms per token, 1625074.04 tokens per second)
+llama_perf_context_print:        load time =    6616.42 ms
+llama_perf_context_print: prompt eval time =    4744.99 ms /  8103 tokens (    0.59 ms per token,  1707.70 tokens per second)
+llama_perf_context_print:        eval time =    3448.89 ms /   127 runs   (   27.16 ms per token,    36.82 tokens per second)
+llama_perf_context_print:       total time =    8228.69 ms /  8230 tokens
+
+llama_perf_sampler_print:    sampling time =       4.98 ms /  8241 runs   (    0.00 ms per token, 1655151.64 tokens per second)
+llama_perf_context_print:        load time =    6713.75 ms
+llama_perf_context_print: prompt eval time =    4842.62 ms /  8113 tokens (    0.60 ms per token,  1675.33 tokens per second)
+llama_perf_context_print:        eval time =    3470.08 ms /   127 runs   (   27.32 ms per token,    36.60 tokens per second)
+llama_perf_context_print:       total time =    8347.57 ms /  8240 tokens
+
+llama_perf_sampler_print:    sampling time =       5.01 ms /  7986 runs   (    0.00 ms per token, 1593058.05 tokens per second)
+llama_perf_context_print:        load time =    6614.36 ms
+llama_perf_context_print: prompt eval time =    4544.45 ms /  7858 tokens (    0.58 ms per token,  1729.14 tokens per second)
+llama_perf_context_print:        eval time =    3396.89 ms /   127 runs   (   26.75 ms per token,    37.39 tokens per second)
+llama_perf_context_print:       total time =    7976.11 ms /  7985 tokens
