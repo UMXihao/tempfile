@@ -1,0 +1,6 @@
+llama_perf_sampler_print:    sampling time =       9.33 ms /  8021 runs   (    0.00 ms per token, 859884.22 tokens per second)
+llama_perf_context_print:        load time =   41363.52 ms
+llama_perf_context_print: prompt eval time = 1023141.86 ms /  7893 tokens (  129.63 ms per token,     7.71 tokens per second)
+llama_perf_context_print:        eval time =  161907.38 ms /   127 runs   ( 1274.86 ms per token,     0.78 tokens per second)
+llama_perf_context_print:       total time = 1185101.94 ms /  8020 tokens
+
