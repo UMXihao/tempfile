@@ -31,21 +31,25 @@ language models trained on code] and MBPP (Austin et al., 2021)footnote:[Program
 models].
 // HumanEval prompt mean length: 132
 
-* Commonsense Reasoning. TrivialQAfootnote:[TriviaQA: A Large Scale Distantly Supervised Challenge Dataset for Reading Comprehension]
+* Commonsense Reasoning.
+// TrivialQAfootnote:[TriviaQA: A Large Scale Distantly Supervised Challenge Dataset for Reading Comprehension]
+L-Evalfootnote:[L-Eval: Instituting Standardized Evaluation for Long Context Language Models]
 // TrivialQA prompt mean length: 14
 // LEval prompt mean length: 19748
 
+为了统计模型在不同的数据集上的推理延迟，我们统计了数据集中prompt的长度，并采用平均长度的数据进行平均推理延迟的测评。
+
 .Performance and Latency Comparison of Different Models
 |===
-|Model|SQuAD 0-shot|TTFT|TPOT|WMT|TTFT|TPOT|Human-Eval pass@1|TTFT|TPOT|ARC-e|TTFT|TPOT|ARC-c|TTFT|TPOT
-// |Orac-mini-3B|||||||||||||41.55||
-// |FastChat-T5-3B|||||||||||||||
-// |Vicuna-7B|||||||||||||||
-|MPT-7B| 59.5||||||18.3|||70.2|||42.6||
-|Llama-2-7B|67.2|56.41|25.24||||12.8|||75.2|||45.9||
-|Llama-2-13B|72.9||||||18.3|||77.3|||49.4||
-// |Vicuna-13B|||||||||||||||
-|Llama-2-70B|80.7||||||29.9|||80.2|||57.4||
+|Model|SQuAD 0-shot|TTFT|TPOT|ARC-e|TTFT|TPOT|ARC-c|TTFT|TPOT|Human-Eval pass@1|TTFT|TPOT|L-Eval ROUGE-1|TTFT|TPOT
+// |Orac-mini-3B||||||||||41.55||
+// |FastChat-T5-3B||||||||||||
+// |Vicuna-7B|sq|t|t|e|t|t|c|t|t|h|t|t|28.91||
+// |MPT-7B| 59.5|||70.2|||42.6|||18.3|||7.66||
+|Llama-2-7B|67.2|||75.2|||45.9|||12.8|||29.75||
+|Llama-2-13B|72.9|||77.3|43.942|26.409|49.4|45.512|26.23|18.3|130.77|26.74|30.49|8107.264|50.576
+// |Vicuna-13B|sq|t|t|e|t|t|c|t|t|h|t|t|28.59||
+|Llama-2-70B|80.7|||80.2|4089.338|1132.963|57.4|4808.393|1134.967|29.9|19766.63|1151.89|44.4312||
 |===
 
 == Existing Works
