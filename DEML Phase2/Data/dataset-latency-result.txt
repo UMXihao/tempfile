@@ -1,3 +1,6 @@
+// vllm server benchmark for dataset latency
+// no sign the llama.cpp the whole process because parallel throughput
+
 SQuaD
 ============ Serving Benchmark Result ============
 Successful requests:                     25200

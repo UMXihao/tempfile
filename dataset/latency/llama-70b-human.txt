@@ -46,3 +46,9 @@ llama_perf_context_print: prompt eval time =   20575.72 ms /   173 tokens (  118
 llama_perf_context_print:        eval time =  145263.09 ms /   127 runs   ( 1143.80 ms per token,     0.87 tokens per second)
 llama_perf_context_print:       total time =  165869.67 ms /   300 tokens
 
+llama_perf_sampler_print:    sampling time =       2.20 ms /   190 runs   (    0.01 ms per token, 86285.20 tokens per second)
+llama_perf_context_print:        load time =   43561.25 ms
+llama_perf_context_print: prompt eval time =   17771.38 ms /   160 tokens (  111.07 ms per token,     9.00 tokens per second)
+llama_perf_context_print:        eval time =   34392.47 ms /    29 runs   ( 1185.95 ms per token,     0.84 tokens per second)
+llama_perf_context_print:       total time =   52175.09 ms /   189 tokens
+

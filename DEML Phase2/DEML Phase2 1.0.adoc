@@ -33,7 +33,7 @@ models].
 
 * Commonsense Reasoning. TrivialQAfootnote:[TriviaQA: A Large Scale Distantly Supervised Challenge Dataset for Reading Comprehension]
 // TrivialQA prompt mean length: 14
-// LEval prompt mean length:
+// LEval prompt mean length: 19748
 
 .Performance and Latency Comparison of Different Models
 |===
