@@ -16,21 +16,26 @@ plt.rcParams["font.family"] = "Times New Roman"
 
 
 def plot_bar():
-    result1 = [0.0714, 0.0840, 0.0784, 0.0709]
+    result1 = [6621.711,6621.639,6618.638,10930.77,335236.15]
     # Arial
     # plt.rcParams['font.sans-serif'] = ['Times New Roman']  # 如果要显示中文字体,则在此处设为：SimHei
     # plt.rcParams['axes.unicode_minus'] = False  # 显示负号
 
+    # 定义断点的范围
+    ylim1 = (0, 11000)  # 第一段范围
+    ylim2 = (330000, 340000)  # 第二段范围
+
     plt.figure(figsize=(5, 4))
-    plt.ylim(0.067, 0.088)
-    labels = ['1', '2', '3', '4']
+    plt.ylim(ylim1[0], ylim2[1])
+    labels = ['7B-ARC-c', '7B-ARC-e', '7B-SQuAD', '13B-Human', '70B-L-Eval']
 
     # from matplotlib.font_manager import FontProperties
     # myfont = FontProperties(fname='times.ttf', size=25)
     plt.xticks(fontsize=15)
-    plt.yticks(fontsize=15)
+    # 添加断点
+    plt.yticks(np.concatenate([np.linspace(ylim1[0], ylim1[1], 5), np.linspace(ylim2[0], ylim2[1], 5)]), fontsize=15)
 
-    colors = ['tomato'] * 4
+    colors = ['blue'] * 4
     # /,  \, |, -, +, x, o, O,., * 。
     plt.bar(np.arange(len(result1)), result1, ec='b', hatch=2 * '.', width=0.5,
             tick_label=labels,
@@ -726,8 +731,8 @@ def plot_multi_bar_cus():
     # 建议保存为svg格式,再用inkscape转为矢量图emf后插入word中
 
 if __name__ == '__main__':
-    # plot_bar()
-    plot_line()
+    plot_bar()
+    # plot_line()
     # plot_multi_bar_cus()
     # plot_bar_and_line()
     # plot_scatters()

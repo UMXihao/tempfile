@@ -46,25 +46,31 @@ L-Evalfootnote:[L-Eval: Instituting Standardized Evaluation for Long Context Lan
 // |FastChat-T5-3B||||||||||||
 // |Vicuna-7B|sq|t|t|e|t|t|c|t|t|h|t|t|28.91||
 // |MPT-7B| 59.5|||70.2|||42.6|||18.3|||7.66||
-|Llama-2-7B|67.2|||75.2|||45.9|||12.8|||29.75||
-|Llama-2-13B|72.9|||77.3|43.942|26.409|49.4|45.512|26.23|18.3|130.77|26.74|30.49|8107.264|50.576
+|Llama-2-7B|67.2|18.638|10.797|75.2|21.639|10.777|45.9|21.711|10.792|12.8|72.79777778|11.09222222|29.75|2093.852222|16.47333333
+|Llama-2-13B|72.9|37.69|24.562|77.3|43.942|26.409|49.4|45.512|26.23|18.3|130.77|26.74|30.49|8107.264|50.576
 // |Vicuna-13B|sq|t|t|e|t|t|c|t|t|h|t|t|28.59||
-|Llama-2-70B|80.7|||80.2|4089.338|1132.963|57.4|4808.393|1134.967|29.9|19766.63|1151.89|44.4312||
+|Llama-2-70B|80.7|4586.691|1126.855|80.2|4089.338|1132.963|57.4|4808.393|1134.967|29.9|19766.63|1151.89|44.4312|362433.67|950.06
 |===
+
+The experiments were run on a Quadro RTX 6000 equipped with 24GB of GDDR6 video memory, and since 24G could not accommodate the 70B model, CPU offloading of the computation had to be used, which ultimately led to a significant increase in the overall inference latency.
 
 == Existing Works
 // 切换延迟
-* Multi-Task-Multi-Models
-* Multi-LoRA-Single-Model
-// 不同稀疏性的剪枝
-// 推理延迟TTFT
-// 推理精度ELMS
-* Multi-Task-Flexible-Model
+* Multi-App-Multi-Models
 
-** 模型切换延迟对比
+In the event of the exclusive large model being customised for each task, it is necessary to load the model parameters from disk to CPU when loading to GPU each time the application is switched.
+The following illustration shows the model inference latency for different sizes, considering the loading time of the model into TTFT:
 
-.Comparison of Model Switching Latency
-image::Figure/switching-latency.png[switching-latency]
+.TTFT Considering the Loading Time
+image::Figure/cpu-gpu-latency.png[switching-latency]
+
+* Multi-App-Static-Model
+
+The static model only satisfies a single inference delay or a single accuracy.
+
+* Multi-App-Flexible-Model
+
+1. ELMSfootnote:[ELMS：Elasticized Large Language Models On Mobile Devices]将手机作为实验平台，仅支持部署3B-7B中小规模的模型，不支持大模型的部署。而对于消费级GPU而言，借助量化和CPU卸载计算可以实现70B大模型的推理工作。
 
 // 除了精度，还要从别的方向喷ELMS
 
