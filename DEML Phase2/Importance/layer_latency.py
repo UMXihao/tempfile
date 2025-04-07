@@ -31,8 +31,8 @@ class TimeRecorder(nn.Module):
         end_time = time.time()  # 结束时间
         duration = end_time - start_time  # 计算耗时
         # if self.module.__class__.__name__ == 'MptAttention':
-        # if self.module.__class__.__name__ == 'LlamaSdpaAttention':
-        if self.module.__class__.__name__ == 'InternLM2Attention':
+        # if self.module.__class__.__name__ == 'InternLM2Attention':
+        if self.module.__class__.__name__ == 'LlamaSdpaAttention':  # Orac/Vicuna/Llama
             latency_attn.append(duration)
         else:
             latency_ffn.append(duration)
@@ -132,10 +132,45 @@ InternLM2ForCausalLM(
   (output): Linear(in_features=4096, out_features=92544, bias=False)
 )
 '''
+# for i in range(len(model.model.layers)):
+#     layer = model.model.layers[i]
+#     layer.attention = TimeRecorder(layer.attention)
+#     layer.feed_forward = TimeRecorder(layer.feed_forward)
+
+'''
+Vicuna
+LlamaForCausalLM(
+  (model): LlamaModel(
+    (embed_tokens): Embedding(32001, 4096, padding_idx=32000)
+    (layers): ModuleList(
+      (0-31): 32 x LlamaDecoderLayer(
+        (self_attn): LlamaSdpaAttention(
+          (q_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (k_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (v_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (o_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (rotary_emb): LlamaRotaryEmbedding()
+        )
+        (mlp): LlamaMLP(
+          (gate_proj): Linear(in_features=4096, out_features=11008, bias=False)
+          (up_proj): Linear(in_features=4096, out_features=11008, bias=False)
+          (down_proj): Linear(in_features=11008, out_features=4096, bias=False)
+          (act_fn): SiLU()
+        )
+        (input_layernorm): LlamaRMSNorm((4096,), eps=1e-06)
+        (post_attention_layernorm): LlamaRMSNorm((4096,), eps=1e-06)
+      )
+    )
+    (norm): LlamaRMSNorm((4096,), eps=1e-06)
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (lm_head): Linear(in_features=4096, out_features=32001, bias=False)
+)
+'''
 for i in range(len(model.model.layers)):
     layer = model.model.layers[i]
-    layer.attention = TimeRecorder(layer.attention)
-    layer.feed_forward = TimeRecorder(layer.feed_forward)
+    layer.self_attn = TimeRecorder(layer.self_attn)
+    layer.mlp = TimeRecorder(layer.mlp)
 
 # 准备输入数据
 prompts = ['What sits on top of the Main Building at Notre Dame?',
@@ -145,7 +180,7 @@ prompts = ['What sits on top of the Main Building at Notre Dame?',
            'What is the Grotto at Notre Dame?',
            'When did the Scholastic Magazine of Notre dame begin publishing?',
            "How often is Notre Dame's the Juggler published?"]
-prompt = "How often is Notre Dame's the Juggler published?"
+prompt = 'When did the Scholastic Magazine of Notre dame begin publishing?'
 inputs = tokenizer(prompt, return_tensors='pt')
 # 执行模型推理
 with torch.no_grad():
