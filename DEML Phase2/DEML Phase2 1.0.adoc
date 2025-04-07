@@ -6,9 +6,6 @@ Xihao Sun <sunxh2016@lzu.edu.cn>
 
 == Problem Statement
 
-我们收集并统计了三类应用当前最常使用的模型的大小，以及每类应用常用的基准测试的数据集。
-我们发现，对于不同的应用，使用的模型大小也不同，对应的推理延迟和性能也不同。因此我们需要一种通用的模型，能够适应不同的应用，保证模型的延迟和性能诉求。
-
 .Common Model Sizes Used for Different Applications
 |===
 |Application|Model Size|Models
@@ -70,15 +67,33 @@ The static model only satisfies a single inference delay or a single accuracy.
 
 * Multi-App-Flexible-Model
 
-1. ELMSfootnote:[ELMS：Elasticized Large Language Models On Mobile Devices]将手机作为实验平台，仅支持部署3B-7B中小规模的模型，不支持大模型的部署。而对于消费级GPU而言，借助量化和CPU卸载计算可以实现70B大模型的推理工作。
-
-// 除了精度，还要从别的方向喷ELMS
-
-// 如果模型装载不下，应该如何处理？
-
-// 多任务的kv cache 管理！
+ELMSfootnote:[ELMS: Elasticized Large Language Models On Mobile Devices] Using mobile phones as experimental platforms, it only supports the deployment of 3B-7B small and medium scale models, not large models. As for consumer-grade GPUs, the reasoning of 70B large models can be achieved with the help of quantisation and CPU offloading computation.
 
 == Observations
+* Interlayer importance
+** 基于梯度
+*** 梯度✖️激活值
+- 计算目标输出对某层输出的梯度
+- 将梯度与激活值相乘得到重要性分数
+*** 梯度范数
+- 计算每层参数梯度L2范数作为重要性指标
+** 基于IO Similarity
+- 层输入输出余弦相似度
+- 计算相邻层输出分布的KL散度
+** 基于扰动
+- 噪声注入
+- 层丢弃影响
+** 基于注意力
+- 评估注意力得分
+** 基于权重
+- 权重阈值分析
+
+* Skipping whole FFN layers is more accurate than partial FFN parameters
+
+ TODO
+
+* The computational delay of FFN is less than that of MHA
+
 
 == Challenges
 
