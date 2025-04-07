@@ -1,44 +1,59 @@
 import torch
-import torch.nn.functional as F
+import torch.nn as nn
 from transformers import AutoModelForCausalLM, AutoTokenizer
+from torch.nn.functional import cosine_similarity
 
 # 加载模型和分词器
 model_name = "/home/yandong/Documents/um-data/models/Llama-2-7b-hf"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(model_name)
 
-# 准备输入数据
-input_text = "This is a sample input text."
+importance_attn = []
+importance_ffn = []
+
+
+def cal_similarity(layer_input, layer_output):
+    similarity = cosine_similarity(layer_input.view(-1), layer_output.view(-1), dim=0)
+    # 进行重要性归一化处理
+    norm_similarity = (similarity + 1) / 2
+    return norm_similarity.mean().item()
+
+
+class SimilarityRecorder(nn.Module):
+    def __init__(self, module):
+        super(SimilarityRecorder, self).__init__()
+        self.module = module
+
+    def forward(self, *args, **kwargs):
+        # llama2: self_attn的输入kwargs.hidden_states, mlp的输入args
+        if self.module.__class__.__name__ == 'LlamaSdpaAttention':
+            layer_input = kwargs.get('hidden_states')
+            output = self.module(*args, **kwargs)  # 执行原始模块
+            importance_attn.append(cal_similarity(layer_input, output[0]))
+        else:
+            layer_input = args[0]
+            output = self.module(*args, **kwargs)  # 执行原始模块
+            importance_ffn.append(cal_similarity(layer_input, output))
+        return output
+
+
+for i in range(len(model.model.layers)):
+    layer = model.model.layers[i]
+    layer.self_attn = SimilarityRecorder(layer.self_attn)
+    layer.mlp = SimilarityRecorder(layer.mlp)
+
+# 准备输入
+prompts = ['What sits on top of the Main Building at Notre Dame?',
+           'To whom did the Virgin Mary allegedly appear in 1858 in Lourdes France?',
+           'What is in front of the Notre Dame Main Building?',
+           'The Basilica of the Sacred heart at Notre Dame is beside to which structure?',
+           'What is the Grotto at Notre Dame?',
+           'When did the Scholastic Magazine of Notre dame begin publishing?',
+           "How often is Notre Dame's the Juggler published?"]
+input_text = "How often is Notre Dame's the Juggler published?"
 inputs = tokenizer(input_text, return_tensors="pt")
 
-# 获取模型的每一层
-layers = model.model.layers
-
-# 存储每一层的输入和输出
-layer_inputs = []
-layer_outputs = []
-
-# 遍历每一层，获取输入和输出
 with torch.no_grad():
-    hidden_states = inputs["input_ids"]
-    for i, layer in enumerate(layers):
-        # 获取当前层的输入
-        layer_inputs.append(hidden_states)
-        # 获取当前层的输出
-        hidden_states = layer(hidden_states)[0]
-        layer_outputs.append(hidden_states)
+    model(inputs['input_ids'])
 
-# 计算每一层的输入和输出之间的余弦相似度
-similarities = []
-for i in range(len(layer_inputs)):
-    input_tensor = layer_inputs[i]
-    output_tensor = layer_outputs[i]
-    # 展平张量以计算相似度
-    input_flat = input_tensor.view(-1)
-    output_flat = output_tensor.view(-1)
-    similarity = F.cosine_similarity(input_flat.unsqueeze(0), output_flat.unsqueeze(0))
-    similarities.append(similarity.item())
-
-# 打印每一层的相似度
-for i, similarity in enumerate(similarities):
-    print(f"Layer {i+1} similarity: {similarity}")
+print("attn:", importance_attn, "\nffn:", importance_ffn)
