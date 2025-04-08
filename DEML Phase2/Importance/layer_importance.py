@@ -4,7 +4,11 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from torch.nn.functional import cosine_similarity
 
 # 加载模型和分词器
-model_name = "/home/yandong/Documents/um-data/models/Llama-2-7b-hf"
+# model_name = "/home/yandong/Documents/um-data/models/Llama-2-7b-hf"
+model_name = "/home/yandong/Documents/um-data/models/Orac-mini-3B"
+# model_name = "/home/yandong/Documents/um-data/models/MPT-7B-Chat"z
+# model_name = "/home/yandong/Documents/um-data/models/InternLM2-chat-7B"
+# model_name = "/home/yandong/Documents/um-data/models/Vicuna-7B"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(model_name)
 
@@ -37,10 +41,29 @@ class SimilarityRecorder(nn.Module):
         return output
 
 
+# Llama2-7B/Orac-mini-3B
 for i in range(len(model.model.layers)):
     layer = model.model.layers[i]
     layer.self_attn = SimilarityRecorder(layer.self_attn)
     layer.mlp = SimilarityRecorder(layer.mlp)
+
+# MPT
+# for i in range(len(model.transformer.blocks)):
+#     layer = model.transformer.blocks[i]
+#     layer.attn = TimeRecorder(layer.attn)
+#     layer.ffn = TimeRecorder(layer.ffn)
+
+# InternLM
+# for i in range(len(model.model.layers)):
+#     layer = model.model.layers[i]
+#     layer.attention = TimeRecorder(layer.attention)
+#     layer.feed_forward = TimeRecorder(layer.feed_forward)
+
+# Vicuna
+# for i in range(len(model.model.layers)):
+#     layer = model.model.layers[i]
+#     layer.self_attn = TimeRecorder(layer.self_attn)
+#     layer.mlp = TimeRecorder(layer.mlp)
 
 # 准备输入
 prompts = ['What sits on top of the Main Building at Notre Dame?',
