@@ -6,16 +6,12 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 # 加载模型
 # model_name = "/home/yandong/Documents/um-data/models/Llama-2-7b-hf"
 # model_name = "/home/yandong/Documents/um-data/models/Orac-mini-3B"
-model_name = "/home/yandong/Documents/um-data/models/MPT-7B-Chat"
+# model_name = "/home/yandong/Documents/um-data/models/MPT-7B-Chat"
 # model_name = "/home/yandong/Documents/um-data/models/InternLM2-chat-7B"
-# model_name = "/home/yandong/Documents/um-data/models/Vicuna-7B"
-# device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-device = torch.device("cpu")
+model_name = "/home/yandong/Documents/um-data/models/Vicuna-7B"
 
-# tokenizer = AutoTokenizer.from_pretrained(model_name)
-# model = AutoModelForCausalLM.from_pretrained(model_name).to(device)
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForCausalLM.from_pretrained(model_name).to(device)
+tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True)
 
 # print(model)
 
@@ -34,9 +30,9 @@ class TimeRecorder(nn.Module):
         output = self.module(*args, **kwargs)  # 执行原始模块
         end_time = time.time()  # 结束时间
         duration = end_time - start_time  # 计算耗时
-        if self.module.__class__.__name__ == 'MptAttention':
+        # if self.module.__class__.__name__ == 'MptAttention':
         # if self.module.__class__.__name__ == 'InternLM2Attention':
-        # if self.module.__class__.__name__ == 'LlamaSdpaAttention':  # Orac/Vicuna/Llama
+        if self.module.__class__.__name__ == 'LlamaSdpaAttention':  # Orac/Vicuna/Llama
             latency_attn.append(duration)
         else:
             latency_ffn.append(duration)
@@ -105,10 +101,10 @@ MptForCausalLM(
   (lm_head): Linear(in_features=4096, out_features=50432, bias=False)
 )
 '''
-for i in range(len(model.transformer.blocks)):
-    layer = model.transformer.blocks[i]
-    layer.attn = TimeRecorder(layer.attn)
-    layer.ffn = TimeRecorder(layer.ffn)
+# for i in range(len(model.transformer.blocks)):
+#     layer = model.transformer.blocks[i]
+#     layer.attn = TimeRecorder(layer.attn)
+#     layer.ffn = TimeRecorder(layer.ffn)
 
 '''
 InternLM2ForCausalLM(
@@ -171,10 +167,10 @@ LlamaForCausalLM(
   (lm_head): Linear(in_features=4096, out_features=32001, bias=False)
 )
 '''
-# for i in range(len(model.model.layers)):
-#     layer = model.model.layers[i]
-#     layer.self_attn = TimeRecorder(layer.self_attn)
-#     layer.mlp = TimeRecorder(layer.mlp)
+for i in range(len(model.model.layers)):
+    layer = model.model.layers[i]
+    layer.self_attn = TimeRecorder(layer.self_attn)
+    layer.mlp = TimeRecorder(layer.mlp)
 
 # 准备输入数据
 prompts = ['What sits on top of the Main Building at Notre Dame?',
@@ -184,14 +180,9 @@ prompts = ['What sits on top of the Main Building at Notre Dame?',
            'What is the Grotto at Notre Dame?',
            'When did the Scholastic Magazine of Notre dame begin publishing?',
            "How often is Notre Dame's the Juggler published?"]
-prompt = 'What sits on top of the Main Building at Notre Dame?'
-inputs = tokenizer(prompt, return_tensors='pt').to(device)
+prompt = 'When did the Scholastic Magazine of Notre dame begin publishing?'
+inputs = tokenizer(prompt, return_tensors='pt')
 # 执行模型推理
 with torch.no_grad():
     model(inputs['input_ids'])
-
-latency = []
-for i in range(len(latency_attn)):
-    # latency.append(latency_attn[i] + latency_ffn[i])
-    print(latency_attn[i] + latency_ffn[i])
-# print("latency:", latency)
+print("attn:", latency_attn, "\nffn:", latency_ffn)
