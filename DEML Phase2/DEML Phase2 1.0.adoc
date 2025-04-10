@@ -70,29 +70,19 @@ The static model only satisfies a single inference delay or a single accuracy.
 ELMSfootnote:[ELMS: Elasticized Large Language Models On Mobile Devices] Using mobile phones as experimental platforms, it only supports the deployment of 3B-7B small and medium scale models, not large models. As for consumer-grade GPUs, the reasoning of 70B large models can be achieved with the help of quantisation and CPU offloading computation.
 
 == Observations
-* Interlayer importance
-** 基于梯度
-*** 梯度✖️激活值
-- 计算目标输出对某层输出的梯度
-- 将梯度与激活值相乘得到重要性分数
-*** 梯度范数
-- 计算每层参数梯度L2范数作为重要性指标
-** 基于IO Similarity
-- 层输入输出余弦相似度
-- 计算相邻层输出分布的KL散度
-** 基于扰动
-- 噪声注入
-- 层丢弃影响
-** 基于注意力
-- 评估注意力得分
-** 基于权重
-- 权重阈值分析
+* 不同的模型层间重要性的分布基本相同，但是子层之间的重要性存在差异
 
-* Skipping whole FFN layers is more accurate than partial FFN parameters
+.Layer-Importance of Different Models
+image::Figure/layer-importance.png[]
 
- TODO
+.Layer-Importance of Different Models
+image::Figure/layer-importance-acc.png[]
 
-* The computational delay of FFN is less than that of MHA
+.SubLayer-Importance of Different Models
+image::Figure/model-attn-ffn-importance.png[]
+
+- layer-importance vs AdaSkip：仅有首尾存在重要性差距
+- sublayer-importance：按照子层的重要性进行筛选
 
 
 == Challenges
