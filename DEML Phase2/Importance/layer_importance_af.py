@@ -38,6 +38,7 @@ class SimilarityRecorder(nn.Module):
         # llama2: self_attn的输入kwargs.hidden_states, mlp的输入args
         if self.module.__class__.__name__ == 'LlamaSdpaAttention':
             output = self.module(*args, **kwargs)  # 执行原始模块
+            print(kwargs.get('hidden_states').shape)
             importance_attn.append(cal_similarity(kwargs.get('hidden_states'), output[0]))
             hidden_state_attn.append(output[0])
         else:
@@ -101,8 +102,8 @@ with torch.no_grad():
 #     similarity = cal_similarity(input_layer, output_layer)
 #     print(similarity)
 
-for i in range(1, len(hidden_state_ffn) - 1):
-    input_layer = hidden_state_ffn[i]
-    output_layer = hidden_state_ffn[i + 1]
-    similarity = cal_similarity(input_layer, output_layer)
-    print(similarity)
+# for i in range(1, len(hidden_state_ffn) - 1):
+#     input_layer = hidden_state_ffn[i]
+#     output_layer = hidden_state_ffn[i + 1]
+#     similarity = cal_similarity(input_layer, output_layer)
+#     print(similarity)
