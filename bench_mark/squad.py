@@ -35,8 +35,8 @@ squad_val example
 '''
 
 llm = Llama(
-    model_path="/home/yandong/Documents/um-data/models/Llama-2-7b-hf-gguf/Llama-2-7b-hf-gguf.gguf",
-    # model_path="/home/yandong/Documents/um-data/models/Llama-2-7b-hf-imp-gguf/Llama-2-7b-hf-imp.gguf",
+    # model_path="/home/yandong/Documents/um-data/models/Llama-2-7b-hf-gguf/Llama-2-7b-hf-gguf.gguf",
+    model_path="/home/yandong/Documents/um-data/models/Llama-2-7b-hf-imp-gguf/Llama-2-7b-hf-imp.gguf",
     # model_path="/home/yandong/Documents/um-data/models/Llama-2-7b-hf-imp-gguf/Llama-2-7b-hf-unimp.gguf",
     n_gpu_layer=-1,
     n_ctx=4096,
@@ -51,8 +51,8 @@ def evaluate_model(dataset):
     references = []
     squad_metric = evaluate.load("squad")
 
-    # for j in tqdm(range(1)):
-    for i in tqdm(range(len(dataset))):
+    for i in tqdm(range(100)):
+    # for i in tqdm(range(len(dataset))):
         context = dataset[i]["context"]
         question = dataset[i]["question"]
         answers = dataset[i]["answers"]
@@ -99,12 +99,12 @@ print(evaluate_model(squad_val))
 '''
 single:
 origin:      {'exact_match': 0.0, 'f1': 10.526315789473683}
-important:   {'exact_match': 0.0, 'f1': 0.0}
-unimportant: {'exact_match': 0.0, 'f1': 80.0}
+important:   {'exact_match': 0.0, 'f1': 50.0}
+unimportant: {'exact_match': 0.0, 'f1': 0.0}
 100:
 origin:      {'exact_match': 4.0, 'f1': 15.462865038772478}
-important:   {'exact_match': 3.0, 'f1': 12.247457770987182}
-unimportant: {'exact_match': 3.0, 'f1': 19.46046053190016}
+important:   {'exact_match': 7.0, 'f1': 21.733007051428107}
+unimportant: {'exact_match': 5.0, 'f1': 17.378484522013935}
 all:
 origin:      {'exact_match': 4.0, 'f1': 15.462865038772478}
 important:   {'exact_match': 3.0, 'f1': 12.247457770987182}
