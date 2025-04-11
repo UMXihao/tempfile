@@ -13,8 +13,16 @@ from datasets import load_dataset
 import evaluate
 from llama_cpp import Llama
 
-# 加载 SQuAD 数据集
-squad_val = load_dataset("squad", split="validation")
+
+def load_squad():
+    # 加载 SQuAD 数据集
+    squad_val = load_dataset("squad", split="validation")
+    return squad_val
+
+
+def load_human_eval():
+    human_eval = load_dataset("bigcode/humanevalpack", "python")["test"]
+    return human_eval
 
 '''
 squad_val example
@@ -46,10 +54,9 @@ llm = Llama(
 
 
 # 准备评估函数
-def evaluate_model(dataset):
+def evaluate_model(dataset, metric):
     predictions = []
     references = []
-    squad_metric = evaluate.load("squad")
 
     for i in tqdm(range(100)):
     # for i in tqdm(range(len(dataset))):
@@ -74,7 +81,7 @@ def evaluate_model(dataset):
         references.append(reference)
         predictions.append(prediction)
 
-    result = squad_metric.compute(predictions=predictions, references=references)
+    result = metric.compute(predictions=predictions, references=references)
     return result
 
 
@@ -93,8 +100,15 @@ Input predictions: ['\u200b\u200bThe Broncos won the Super Bowl for the third ti
 Input references: [['Denver Broncos', 'Denver Broncos', 'Denver Broncos']]
 '''
 
-# 推理
-print(evaluate_model(squad_val))
+
+# data = load_squad()
+# squad_metric = evaluate.load("squad")
+# print(evaluate_model(data, squad_metric))
+
+data = load_human_eval()
+print(data)
+# human_metric = evaluate.load("humaneval")
+# print(evaluate_model(data, human_metric))
 
 '''
 single:
