@@ -44,8 +44,8 @@ squad_val example
 
 llm = Llama(
     # model_path="/home/yandong/Documents/um-data/models/Llama-2-7b-hf-gguf/Llama-2-7b-hf-gguf.gguf",
-    model_path="/home/yandong/Documents/um-data/models/Llama-2-7b-hf-imp-gguf/Llama-2-7b-hf-imp.gguf",
-    # model_path="/home/yandong/Documents/um-data/models/Llama-2-7b-hf-imp-gguf/Llama-2-7b-hf-unimp.gguf",
+    # model_path="/home/yandong/Documents/um-data/models/Llama-2-7b-hf-imp-gguf/Llama-2-7b-hf-imp.gguf",
+    model_path="/home/yandong/Documents/um-data/models/Llama-2-7b-hf-imp-gguf/Llama-2-7b-hf-unimp.gguf",
     n_gpu_layer=-1,
     n_ctx=4096,
     seed=1337,
@@ -58,7 +58,7 @@ def evaluate_model(dataset, metric):
     predictions = []
     references = []
 
-    for i in tqdm(range(100)):
+    for i in tqdm(range(3)):
     # for i in tqdm(range(len(dataset))):
         context = dataset[i]["context"]
         question = dataset[i]["question"]
@@ -67,7 +67,7 @@ def evaluate_model(dataset, metric):
 
         # 构造输入文本
         input_text = f"Context: {context}\nQuestion: {question}\nAnswer: "
-
+        print("\n", input_text)
         # 生成回答
         output = llm(
             input_text,
@@ -77,6 +77,8 @@ def evaluate_model(dataset, metric):
         )
         reference = {'answers': answers, 'id': question_id}
         prediction = {'prediction_text': output['choices'][0]['text'], 'id': question_id}
+        print("answers: ", answers)
+        print("prediction_text: ", output['choices'][0]['text'])
 
         references.append(reference)
         predictions.append(prediction)
@@ -101,26 +103,18 @@ Input references: [['Denver Broncos', 'Denver Broncos', 'Denver Broncos']]
 '''
 
 
-# data = load_squad()
-# squad_metric = evaluate.load("squad")
-# print(evaluate_model(data, squad_metric))
+data = load_squad()
+squad_metric = evaluate.load("squad")
+print(evaluate_model(data, squad_metric))
 
-data = load_human_eval()
-print(data)
+# data = load_human_eval()
+# print(data)
 # human_metric = evaluate.load("humaneval")
 # print(evaluate_model(data, human_metric))
 
 '''
 single:
 origin:      {'exact_match': 0.0, 'f1': 10.526315789473683}
-important:   {'exact_match': 0.0, 'f1': 50.0}
+important:   {'exact_match': 0.0, 'f1': 80.0}
 unimportant: {'exact_match': 0.0, 'f1': 0.0}
-100:
-origin:      {'exact_match': 4.0, 'f1': 15.462865038772478}
-important:   {'exact_match': 7.0, 'f1': 21.733007051428107}
-unimportant: {'exact_match': 5.0, 'f1': 17.378484522013935}
-all:
-origin:      {'exact_match': 4.0, 'f1': 15.462865038772478}
-important:   {'exact_match': 3.0, 'f1': 12.247457770987182}
-unimportant: {'exact_match': 3.0, 'f1': 19.46046053190016}
 '''

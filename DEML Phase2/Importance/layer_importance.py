@@ -7,8 +7,8 @@ import time
 device = torch.device("cpu")
 
 # 加载模型和分词器
-# model_name = "/home/yandong/Documents/um-data/models/Llama-2-7b-hf"
-model_name = "/home/yandong/Documents/um-data/models/Llama-2-13b-chat-hf"
+model_name = "/home/yandong/Documents/um-data/models/Llama-2-7b-hf"
+# model_name = "/home/yandong/Documents/um-data/models/Llama-2-13b-chat-hf"
 # model_name = "/home/yandong/Documents/um-data/models/Orac-mini-3B"
 # model_name = "/home/yandong/Documents/um-data/models/MPT-7B-Chat"
 # model_name = "/home/yandong/Documents/um-data/models/InternLM2-chat-7B"
@@ -24,17 +24,12 @@ prompts = ['What sits on top of the Main Building at Notre Dame?',
            'What is the Grotto at Notre Dame?',
            'When did the Scholastic Magazine of Notre dame begin publishing?',
            "How often is Notre Dame's the Juggler published?"]
-input_text = '''from typing import List
-def has_close_elements(numbers: List[float], threshold: float) -> bool:
-    """ Check if in given list of numbers, are any two numbers closer to each other than
-    given threshold.
-    >>> has_close_elements([1.0, 2.0, 3.0], 0.5)
-    False
-    >>> has_close_elements([1.0, 2.8, 3.0, 4.0, 5.0, 2.0], 0.3)
-    True
-    """
-
-'''
+from datasets import load_dataset
+squad_val = load_dataset("squad", split="validation")
+context = squad_val[2]["context"]
+question = squad_val[2]["question"]
+answers = squad_val[2]["answers"]
+input_text = f"Context: {context}\nQuestion: {question}\nAnswer: "
 inputs = tokenizer(input_text, return_tensors="pt").to(device)
 
 

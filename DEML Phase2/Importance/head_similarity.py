@@ -17,16 +17,16 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from torch.nn.functional import cosine_similarity
 
 # 加载模型和分词器
-# model_name = "/home/yandong/Documents/um-data/models/Llama-2-7b-hf"
+model_name = "/home/yandong/Documents/um-data/models/Llama-2-7b-hf"
 # model_name = "/home/yandong/Documents/um-data/models/Orac-mini-3B"
 # model_name = "/home/yandong/Documents/um-data/models/Vicuna-7B"
 # model_name = "/home/yandong/Documents/um-data/models/MPT-7B-Chat"
-model_name = "/home/yandong/Documents/um-data/models/InternLM2-chat-7B"
+# model_name = "/home/yandong/Documents/um-data/models/InternLM2-chat-7B"
 
-# tokenizer = AutoTokenizer.from_pretrained(model_name)
-# model = AutoModelForCausalLM.from_pretrained(model_name)
-tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)  # InternLM2
-model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True)  # InternLM2
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForCausalLM.from_pretrained(model_name)
+# tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)  # InternLM2
+# model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True)  # InternLM2
 
 importance_head = []
 
@@ -78,12 +78,13 @@ class SimilarityRecorder(nn.Module):
 
     def forward(self, *args, **kwargs):
         # llama2: self_attn的输入kwargs.hidden_states, mlp的输入args
-        # if self.module.__class__.__name__ == 'LlamaSdpaAttention':
-        #     output = self.module(*args, **kwargs)  # 执行原始模块
-        #     hidden_state_input.append(kwargs.get('hidden_states'))
-        #     hidden_state_attn.append(output[0])
-        # else:
-        #     output = self.module(*args, **kwargs)  # 执行原始模块
+        if self.module.__class__.__name__ == 'LlamaSdpaAttention':
+            output = self.module(*args, **kwargs)  # 执行原始模块
+            hidden_state_input.append(kwargs.get('hidden_states'))
+            hidden_state_attn.append(output[0])
+        else:
+            output = self.module(*args, **kwargs)  # 执行原始模块
+
         # if self.module.__class__.__name__ == 'MptAttention':
         #     output = self.module(*args, **kwargs)  # 执行原始模块
         #     hidden_state_input.append(args[0])
@@ -91,20 +92,20 @@ class SimilarityRecorder(nn.Module):
         # else:
         #     output = self.module(*args, **kwargs)  # 执行原始模块
 
-        if self.module.__class__.__name__ == 'InternLM2Attention':
-            output = self.module(*args, **kwargs)  # 执行原始模块
-            hidden_state_input.append(kwargs.get('hidden_states'))
-            hidden_state_attn.append(output[0])
-        else:
-            output = self.module(*args, **kwargs)  # 执行原始模块
+        # if self.module.__class__.__name__ == 'InternLM2Attention':
+        #     output = self.module(*args, **kwargs)  # 执行原始模块
+        #     hidden_state_input.append(kwargs.get('hidden_states'))
+        #     hidden_state_attn.append(output[0])
+        # else:
+        #     output = self.module(*args, **kwargs)  # 执行原始模块
         return output
 
 
 # Llama2-7B/Orac-mini-3B/Vicuna
-# for i in range(len(model.model.layers)):
-#     layer = model.model.layers[i]
-#     layer.self_attn = SimilarityRecorder(layer.self_attn)
-#     layer.mlp = SimilarityRecorder(layer.mlp)
+for i in range(len(model.model.layers)):
+    layer = model.model.layers[i]
+    layer.self_attn = SimilarityRecorder(layer.self_attn)
+    layer.mlp = SimilarityRecorder(layer.mlp)
 
 # MPT
 # for i in range(len(model.transformer.blocks)):
@@ -113,10 +114,10 @@ class SimilarityRecorder(nn.Module):
 #     layer.ffn = SimilarityRecorder(layer.ffn)
 
 # InternLM
-for i in range(len(model.model.layers)):
-    layer = model.model.layers[i]
-    layer.attention = SimilarityRecorder(layer.attention)
-    layer.feed_forward = SimilarityRecorder(layer.feed_forward)
+# for i in range(len(model.model.layers)):
+#     layer = model.model.layers[i]
+#     layer.attention = SimilarityRecorder(layer.attention)
+#     layer.feed_forward = SimilarityRecorder(layer.feed_forward)
 
 # 准备输入
 prompts = ['What sits on top of the Main Building at Notre Dame?',
@@ -126,7 +127,15 @@ prompts = ['What sits on top of the Main Building at Notre Dame?',
            'What is the Grotto at Notre Dame?',
            'When did the Scholastic Magazine of Notre dame begin publishing?',
            "How often is Notre Dame's the Juggler published?"]
-input_text = 'What is the Grotto at Notre Dame?'
+from datasets import load_dataset
+
+
+squad_val = load_dataset("squad", split="validation")
+context = squad_val[2]["context"]
+question = squad_val[2]["question"]
+answers = squad_val[2]["answers"]
+input_text = f"Context: {context}\nQuestion: {question}\nAnswer: "
+# input_text = 'When did the Scholastic Magazine of Notre dame begin publishing?'
 inputs = tokenizer(input_text, return_tensors="pt")
 
 with torch.no_grad():
