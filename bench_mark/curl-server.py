@@ -24,7 +24,7 @@ predictions = []
 references = []
 
 start_time = time.time()
-for i in tqdm(range(3)):
+for i in tqdm(range(1)):
     # for i in tqdm(range(len(dataset))):
     context = squad_val[i]["context"]
     question = squad_val[i]["question"]
@@ -45,7 +45,7 @@ for i in tqdm(range(3)):
     predictions.append(prediction)
 
 result = evaluate.load("squad").compute(predictions=predictions, references=references)
-
+print(result)
 end_time = time.time()
 elapsed_time = end_time - start_time
 print(f"requests: {elapsed_time:.2f} seconds")
