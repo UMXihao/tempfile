@@ -3,6 +3,14 @@ start llama.cpp server
 build/bin/llama-server -m /Users/sunxihao/Documents/code/llama.cpp/models/meta-llama-3-8B-Q4.gguf
 """
 
+# origin: {'exact_match': 0.8, 'f1': 10.712394806511215} 2550.10 seconds
+# mha-com1: {'exact_match': 0.7, 'f1': 9.611282249657261} 2619.58 second
+# mha-com2: {'exact_match': 1.5, 'f1': 11.080792751055608} 2626.62 seconds
+# mha-com3: {'exact_match': 1.1, 'f1': 10.805290867036286} 2640.59 seconds
+# mlp-com1: {'exact_match': 1.0, 'f1': 10.930289111442235} 2599.92 seconds
+# mlp-com2: {'exact_match': 1.4, 'f1': 10.674141385073654} 2673.28 seconds
+# mlp-com3: {'exact_match': 1.4, 'f1': 9.465017859774878} 2685.24 seconds
+
 import requests
 import time
 from tqdm import tqdm
@@ -24,7 +32,7 @@ predictions = []
 references = []
 
 start_time = time.time()
-for i in tqdm(range(1)):
+for i in tqdm(range(1000)):
     # for i in tqdm(range(len(dataset))):
     context = squad_val[i]["context"]
     question = squad_val[i]["question"]
