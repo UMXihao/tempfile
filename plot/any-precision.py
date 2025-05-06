@@ -21,4 +21,5 @@ plt.xticks(x, categories)  # 设置x轴刻度标签
 # plt.legend()  # 添加图例
 
 # 显示图形
-plt.show()
+plt.savefig('pics/mutil-model.pdf', format='pdf', bbox_inches='tight', pad_inches=0.26)
+# plt.show()

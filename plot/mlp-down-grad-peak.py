@@ -64,4 +64,5 @@ plt.tight_layout()
 
 # 显示图形
 # plt.show()
-plt.savefig('./pics/same-gradient-peak-layer.png', format='png')
+# plt.savefig('./pics/same-gradient-peak-layer.png', format='png')
+plt.savefig('pics/same-gradient-peak-layer.pdf', format='pdf', bbox_inches='tight', pad_inches=0.26)

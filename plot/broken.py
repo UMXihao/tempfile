@@ -73,4 +73,5 @@ plt.tight_layout()
 plt.legend(loc='upper left', fontsize=20)
 # 显示图像
 # plt.show()
-plt.savefig('./pics/mutil-model-load-time.png', format='png')
+# plt.savefig('./pics/mutil-model-load-time.png', format='png')
+plt.savefig('pics/mutil-model-load-time.pdf', format='pdf', bbox_inches='tight', pad_inches=0.26)
