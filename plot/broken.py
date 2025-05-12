@@ -11,10 +11,10 @@ data1 = [2200, 2432.05, 14368.2]
 
 # labels = ['7B-ARC-C', '7B-ARC-E', '7B-SQuAD', '13B-Human', '70B-LEval']
 
-labels = ['7B-SQuAD', '13B-Human', '70B-LEval']
+labels = ['Llama-2-7B', '13B', '70B']
 
 # 创建画布
-fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8), sharex=True, gridspec_kw={'height_ratios': [1, 4]})
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(6, 5), sharex=True, gridspec_kw={'height_ratios': [1, 4]})
 plt.xticks(fontsize=20)
 
 # 绘制第一部分柱状图（断点以上部分）
@@ -65,12 +65,12 @@ ax2.grid(axis='y', linestyle='--', alpha=0.7)
 
 # 设置标题和标签
 # ax2.set_xlabel('Model & Dataset',size=20,alpha=0.8)
-ax2.set_ylabel('Latency',size=20,alpha=0.8)
+ax2.set_ylabel('Latency', fontsize=24, alpha=0.8)
 # ax1.set_ylabel('Values')
 
 # 调整布局
 plt.tight_layout()
-plt.legend(loc='upper left', fontsize=20)
+plt.legend(fontsize=20)
 # 显示图像
 # plt.show()
 # plt.savefig('./pics/mutil-model-load-time.png', format='png')

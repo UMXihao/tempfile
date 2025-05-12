@@ -23,41 +23,52 @@ llama_13b_human = [12.99939346,11.96592426,1.170732737,24.58704185,2.376490116,1
 llama_13b_leval = [0.888162971,0.373214096,0.226336509,4.299430847,0.270589441,0.296338648,0.316108495,0.376073241,0.37398681,0.359223574,0.342730612,0.338067442,0.33844021,0.327309698,0.319553703,0.319696456,0.336481094,0.329652905,0.323662221,0.329448462,0.33061862,0.339765877,0.327217549,0.321833014,0.305161387,0.30616045,0.295980334,0.287351996,0.281230569,0.274164885,0.264561594,0.257386923,0.253585696,0.250960618,0.252372324,0.262236238,0.288986892,0.290604591,0.323353022,0.286500782]
 
 # 创建一个画布
-plt.figure(figsize=(20, 5))  # 设置画布大小，宽度为15英寸，高度为5英寸
+plt.figure(figsize=(20, 5))  # 设置画布大小，宽度为20英寸，高度为5英寸
 
 # 绘制第一个折线图
 plt.subplot(1, 4, 1)  # 表示一行三列的第1个位置
 plt.plot(x_3B, orac_squad, label='SQuAD', color='blue', marker='o')  # 第一组数据
 plt.plot(x_3B, orac_human, label='Human_Eval', color='red', marker='s')   # 第二组数据
 plt.plot(x_3B, orac_leval, label='L-Eval', color='orange', marker='^')   # 第三组数据
-plt.title('Orac-mini-3B')  # 设置标题
-plt.xlabel('Layer')  # 设置X轴标签
-plt.ylabel('Gradient')  # 设置Y轴标签
+plt.title('Orac-mini-3B', fontsize=24)  # 设置标题
+plt.xlabel('Layer', fontsize=24)  # 设置X轴标签
+plt.ylabel('Gradient', fontsize=24)  # 设置Y轴标签
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
 
 # 绘制第二个折线图
 plt.subplot(1, 4, 2)  # 表示一行三列的第2个位置
 plt.plot(x_7B, llama2_squad, label='SQuAD', color='blue', marker='o')  # 第一组数据
 plt.plot(x_7B, llama2_human, label='Human_Eval', color='red', marker='s') # 第二组数据
 plt.plot(x_7B, llama2_leval, label='L-Eval', color='orange', marker='^')   # 第三组数据
-plt.title('Llama-2-7B')  # 设置标题
-plt.xlabel('Layer')  # 设置X轴标签
+plt.title('Llama-2-7B', fontsize=24)  # 设置标题
+plt.xlabel('Layer', fontsize=24)  # 设置X轴标签
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
 
 # 绘制第三个折线图
 plt.subplot(1, 4, 3)  # 表示一行三列的第3个位置
 plt.plot(x_7B, mpt_squad, label='SQuAD', color='blue', marker='o')  # 第一组数据
 plt.plot(x_7B, mpt_human, label='Human_Eval', color='red', marker='s')   # 第二组数据
 plt.plot(x_7B, mpt_leval, label='L-Eval', color='orange', marker='^')   # 第三组数据
-plt.title('MPT-7B')  # 设置标题
-plt.xlabel('Layer')  # 设置X轴标签
+plt.title('MPT-7B', fontsize=24)  # 设置标题
+plt.xlabel('Layer', fontsize=24)  # 设置X轴标签
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
 
 # 绘制第四个折线图
 plt.subplot(1, 4, 4)  # 表示一行三列的第3个位置
 plt.plot(x_13B, llama_13b_squad, label='SQuAD', color='blue', marker='o')  # 第一组数据
 plt.plot(x_13B, llama_13b_human, label='Human_Eval', color='red', marker='s')   # 第二组数据
 plt.plot(x_13B, llama_13b_leval, label='L-Eval', color='orange', marker='^')   # 第三组数据
-plt.title('Llama-2-13B')  # 设置标题
-plt.xlabel('Layer')  # 设置X轴标签
-plt.legend()  # 显示图例
+plt.title('Llama-2-13B', fontsize=24)  # 设置标题
+plt.xlabel('Layer', fontsize=24)  # 设置X轴标签
+
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
+
+# 添加图例
+plt.legend(fontsize=20)
 
 # 调整子图之间的间距
 plt.tight_layout()
